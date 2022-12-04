@@ -5,7 +5,7 @@ if (typeof window === "undefined") {
   bls = require("bls-eth-wasm/browser");
 }
 
-module.exports.generateKey = async (k = 5, n = 3) => {
+module.exports.generateKey = async (k = 3, n = 5) => {
   let msk = [];
   let idVec = [];
   let secVec = [];
@@ -32,18 +32,21 @@ module.exports.generateKey = async (k = 5, n = 3) => {
     id.setByCSPRNG();
     idVec.push(id);
 
-    //Create a secKey Shade
+    //Create a secKey Shard
     let sk = new bls.SecretKey();
     sk.share(msk, idVec[i]);
     secVec.push(sk);
   }
 
+  if (secVec.length !== idVec.length)
+    throw new Error("key vector Length don't match");
+
   //Convert vector in to readable hex values
-  var secData = secVec.map((sk) => sk.serializeToHexStr());
-  var idData = idVec.map((id) => id.serializeToHexStr());
   return {
     masterKey: msk[0].serializeToHexStr(),
-    keyShades: secData,
-    idData: idData,
+    keyShards: secVec?.map((sk, index) => ({
+      key: sk.serializeToHexStr(),
+      id: idVec[index].serializeToHexStr(),
+    }))??[],
   };
 };

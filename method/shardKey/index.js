@@ -5,7 +5,7 @@ if (typeof window === "undefined") {
   bls = require("bls-eth-wasm/browser");
 }
 
-module.exports.shadKey = async (key, k = 5, n = 3) => {
+module.exports.ShardKey = async (key, k = 3, n = 5) => {
   try {
     let msk = [];
     let idVec = [];
@@ -30,21 +30,22 @@ module.exports.shadKey = async (key, k = 5, n = 3) => {
       id.setByCSPRNG();
       idVec.push(id);
 
-      //Create a secKey Shade
+      //Create a secKey Shard
       let sk = new bls.SecretKey();
       sk.share(msk, idVec[i]);
       secVec.push(sk);
     }
 
     //Convert vector in to readable hex values
-    var secData = secVec.map((sk) => sk.serializeToHexStr());
-    var idData = idVec.map((id) => id.serializeToHexStr());
     return {
-      isKeyShadable: true,
-      keyShades: secData,
-      idData: idData,
+      isShardable: true,
+      keyShards:
+        secVec?.map((sk, index) => ({
+          key: sk.serializeToHexStr(),
+          id: idVec[index].serializeToHexStr(),
+        })) ?? [],
     };
   } catch (e) {
-    return { isKeyShadable: false, keyShades: [], idData: [] };
+    return { isShardable: false, keyShards: [] };
   }
 };
