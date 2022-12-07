@@ -41,7 +41,6 @@ module.exports.recoverKey = async (keyShards) => {
     let s = sec.serializeToHexStr();
     return { masterKey: s, error: null };
   } catch (err) {
-    console.log(err.message);
     return { masterKey: null, error: "can't recover Key" };
   }
 };

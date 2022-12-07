@@ -5,7 +5,11 @@ if (typeof window === "undefined") {
   bls = require("bls-eth-wasm/browser");
 }
 
-module.exports.generate = async (k = 3, n = 5) => {
+module.exports.generate = async (threshold = 3, keyCount = 5) => {
+  if (threshold > keyCount) {
+    throw new Error("keyCount must be greater then threshold");
+  }
+
   let msk = [];
   let idVec = [];
   let secVec = [];
@@ -17,7 +21,7 @@ module.exports.generate = async (k = 3, n = 5) => {
   */
 
   // other members of the array ingredients used in the algorithm
-  for (let i = 0; i < k; i++) {
+  for (let i = 0; i < threshold; i++) {
     let sk = new bls.SecretKey();
     sk.setByCSPRNG();
     msk.push(sk);
@@ -26,7 +30,7 @@ module.exports.generate = async (k = 3, n = 5) => {
   /*
   key sharing
   */
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < keyCount; i++) {
     //create random Vector ID(points on the ECC)
     let id = new bls.Id();
     id.setByCSPRNG();
@@ -44,9 +48,10 @@ module.exports.generate = async (k = 3, n = 5) => {
   //Convert vector in to readable hex values
   return {
     masterKey: msk[0]?.serializeToHexStr(),
-    keyShards: secVec?.map((sk, index) => ({
-      key: sk.serializeToHexStr(),
-      index: idVec[index].serializeToHexStr(),
-    }))??[],
+    keyShards:
+      secVec?.map((sk, index) => ({
+        key: sk.serializeToHexStr(),
+        index: idVec[index].serializeToHexStr(),
+      })) ?? [],
   };
 };

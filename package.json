@@ -1,5 +1,5 @@
 {
-  "name": "encryptionSdk",
+  "name": "encryption-sdk",
   "version": "1.0.0",
   "description": "Encryption SDK",
   "main": "index.js",
@@ -9,8 +9,10 @@
     "axios": "^1.2.0",
     "bls-eth-wasm": "^1.0.5"
   },
+  "types": "./method/index.d.ts",
   "scripts": {
-    "test": "jest  --runInBand"
+    "test": "jest  --runInBand",
+    "coverage": "jest  --runInBand --coverage"
   },
   "devDependencies": {
     "ethers": "^5.7.2",

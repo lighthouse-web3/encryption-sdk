@@ -10,8 +10,8 @@ module.exports.getAuthMessage = async (address) => {
         },
       })
       .then((res) => res.data[0].message);
-    return { message: data, error: {} };
+    return { message: data, error: null };
   } catch (err) {
-    return { message: {}, error: err?.response?.data || err.message };
+    return { message: null, error: err?.response?.data || err.message };
   }
 };
