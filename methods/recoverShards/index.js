@@ -52,7 +52,6 @@ module.exports.recoverShards = async (
       shards: recoveredShards,
       error: null,
     };
-    d;
   } catch (err) {
     return {
       shards: [],
