@@ -31,10 +31,10 @@ This method generates randomized key shards
 
 ### Parameters
 
-| Name                   | Type                                   | Description                     |
-| ---------------------- | -------------------------------------- | --------------------------------|
-| threshold              | number(optional default = 3)           | minimum amount of key required to recover master key|
-| keyCount               | number(optional default = 5)           | number of shades to be generated (**Note**: *must be greater than or equal to threshold*)|
+| Name                   | Type                                   | Default  | Description                     |
+| ---------------------- | -------------------------------------- | -------  |--------------------------------|
+| threshold              | number(optional)                       | 3        | minimum amount of key required to recover master key|
+| keyCount               | number(optional)                       | 5        | number of shades to be generated (**Note**: *must be greater than or equal to threshold*)|
 
 ```javascript
 
