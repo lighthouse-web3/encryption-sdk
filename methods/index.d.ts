@@ -27,12 +27,12 @@ export type AuthMessage = {
 
 export function getAuthMessage(address: string): Promise<AuthMessage>;
 
-export type RecoverKey = {
+export type RecoveredKey = {
   masterKey: string | null;
   error: string | ErrorValue | null;
 };
 
-export function recoverKey(keyShards: keyShard[]): Promise<RecoverKey>;
+export function recoverKey(keyShards: keyShard[]): Promise<RecoveredKey>;
 
 type RecoverShards = {
   shards: keyShard[];
