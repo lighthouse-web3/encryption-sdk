@@ -36,6 +36,16 @@ This method generates randomized key shards
 | threshold              | number(optional)                       | 3        | minimum amount of key required to recover master key|
 | keyCount               | number(optional)                       | 5        | number of shades to be generated (**Note**: *must be greater than or equal to threshold*)|
 
+#### returns
+
+| Name                   | Type                                   | Description                    |
+| ---------------------- | -------------------------------------- |--------------------------------|
+| masterKey              | string                                 | 32 byte string or key          |
+| keyShards              | {key:string,index:string}[]            | key shards                     | 
+
+
+
+
 ```javascript
 
 import { generate } from "lighthouse-encryption-sdk";
@@ -64,6 +74,14 @@ This method recovers the master key from the shards generated
 | Name                   | Type                                   | Description                     |
 | ---------------------- | -------------------------------------- | --------------------------------|
 | keyShard               | {key:string,index:string}[]            | minimum amount of key required to recover master key|
+
+#### returns
+
+| Name                   | Type                                   | Description                    |
+| ---------------------- | -------------------------------------- |--------------------------------|
+| masterKey              | string                                 | 32 byte string or key          |
+| error                  | ErrorValue | null                      | error                          | 
+
 
 
 ```javascript
@@ -94,11 +112,11 @@ shard existing Key into shards
 
 | Name                   | Type                                   | Default  | Description                     |
 | ---------------------- | -------------------------------------- | -------- | --------------------------------|
-| key                    | string                                 |          |minimum amount of key required to recover master key|
+| key                    | string                                 |          | 32 byte string or key           |
 | threshold              | number(optional)                       | 3        | minimum amount of key required to recover master key|
 | keyCount               | number(optional)                       | 5        | number of shades to be generated (**Note**: *must be greater than or equal to threshold*)|
 
-returns
+#### returns
 
 | Name                   | Type                                   | Description                    |
 | ---------------------- | -------------------------------------- |--------------------------------|
@@ -133,3 +151,29 @@ main()
   });
 
 ```
+
+- ###  _saveShards( address: string, cid: string, signature: string, keyShards: keyShard[5], : string[])_
+
+Backup key to lighthouse's Node
+
+#### Parameters
+
+
+| Name                   | Type                                     | Default  | Description                              |
+| ---------------------- | ---------------------------------------- | -------- | -----------------------------------------|
+| address                | string                                   |          | address of the owner of the key          |
+| cid                    | string                                   |          | unique id or file CID                    |
+| signature              | string                                   |          | signed Message gotten from getAuthMessage|
+| keyShards              | Array<{key:string; index:string}>        |          | An array of 5 key shards/ element        |
+| shareTo                | Array< address >(Options)                |   []     | An array of address                      |
+
+
+
+#### returns
+
+| Name                   | Type                                   | Description                             |
+| ---------------------- | -------------------------------------- |-----------------------------------------|
+| isSaved                | boolean                                | return true is saved                    |
+| error                  | ErrorValue                             | Errors                                  | 
+
+

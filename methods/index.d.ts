@@ -64,7 +64,18 @@ export function saveShards(
   error: ErrorValue;
 }>;
 
-export function shardKey(key:string,): Promise<{
+export function shardKey(key: string): Promise<{
   isShardable: boolean;
-  keyShards: keyShard[] ;
+  keyShards: keyShard[];
+}>;
+
+export function saveShards(
+  address:string,
+  cid:string,
+  signature:string,
+  keyShards:string,
+  shareTo? : Array<string>
+): Promise<{
+  isSaved: boolean;
+  error: null;
 }>;
