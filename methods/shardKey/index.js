@@ -5,7 +5,7 @@ if (typeof window === "undefined") {
   bls = require("bls-eth-wasm/browser");
 }
 
-module.exports.shardKey = async (key, k = 3, n = 5) => {
+module.exports.shardKey = async (key, threshold = 3, keyCount = 5) => {
   try {
     let msk = [];
     let idVec = [];
@@ -15,7 +15,7 @@ module.exports.shardKey = async (key, k = 3, n = 5) => {
     masterKey.deserializeHexStr(key);
     msk.push(masterKey);
 
-    for (let i = 0; i < k; i++) {
+    for (let i = 0; i < threshold; i++) {
       let sk = new bls.SecretKey();
       sk.setByCSPRNG();
       msk.push(sk);
@@ -24,7 +24,7 @@ module.exports.shardKey = async (key, k = 3, n = 5) => {
     /*
     key sharing
     */
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < keyCount; i++) {
       //create random Vector ID(points on the ECC)
       let id = new bls.Id();
       id.setByCSPRNG();

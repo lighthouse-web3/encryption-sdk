@@ -63,3 +63,8 @@ export function saveShards(
   isSaved: boolean;
   error: ErrorValue;
 }>;
+
+export function shardKey(key:string,): Promise<{
+  isShardable: boolean;
+  keyShards: keyShard[] ;
+}>;
