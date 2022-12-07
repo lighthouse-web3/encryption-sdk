@@ -29,7 +29,7 @@ npm i --save lighthouse-encryption-sdk
 
 This method generates randomized key shards 
 
-### Props
+### Parameters
 
 | Name                   | Type                                   | Description                     |
 | ---------------------- | -------------------------------------- | --------------------------------|
@@ -59,7 +59,7 @@ This method generates randomized key shards
 
 This method recovers the master key from the shards generated
 
-### Props
+### Parameters
 
 | Name                   | Type                                   | Description                     |
 | ---------------------- | -------------------------------------- | --------------------------------|
