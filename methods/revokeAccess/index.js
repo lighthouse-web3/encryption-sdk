@@ -29,7 +29,7 @@ module.exports.revokeAccess = async (address, cid, signature, revokeTo) => {
       })
     );
     return {
-      revoked: isEqual(data) && data[0]?.message === "success",
+      revoked: isEqual(...data) && data[0]?.message === "success",
       error: null,
     };
   } catch (err) {

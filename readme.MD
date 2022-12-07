@@ -44,7 +44,7 @@ This method generates randomized key shards
 | keyShards              | {key:string,index:string}[]            | key shards                     | 
 
 
-
+#### Demo
 
 ```javascript
 
@@ -83,6 +83,7 @@ This method recovers the master key from the shards generated
 | error                  | ErrorValue | null                      | error                          | 
 
 
+#### Demo
 
 ```javascript
 import { generate, recoverKey } from "lighthouse-encryption-sdk";
@@ -123,6 +124,8 @@ shard existing Key into shards
 | isShardable            | boolean                                | return true is the key could be sharded |
 | keyShards              | keyShard[]                             | shards                              | 
 
+
+#### Demo
 
 ```javascript
 import { shardKey, recoverKey } from "../index";
@@ -177,3 +180,44 @@ Backup key to lighthouse's Node
 | error                  | ErrorValue                             | Errors                                  | 
 
 
+#### Demo
+
+```javascript
+import { shardKey, recoverKey, getAuthMessage, saveShards } from "../index";
+import { ethers } from "ethers";
+import { v4 as uuidv4 } from "uuid";
+
+async function main() {
+  const provider = ethers.getDefaultProvider();
+  let signer = new ethers.Wallet(
+    "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
+  );
+
+  const authMessage = await getAuthMessage(signer.address);
+  const signedMessage = await signer.signMessage(authMessage.message);
+
+  const { error, isSaved } = await saveShards(
+    signer.address,
+    "testCid",
+    signedMessage,
+    [
+      { key: "1", index: "1" },
+      { key: "2", index: "2" },
+      { key: "3", index: "3" },
+      { key: "4", index: "4" },
+      { key: "5", index: "5" },
+    ]
+  );
+
+  console.log(error === null) // true;
+  console.log(isSaved === true) //true;
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+
+```

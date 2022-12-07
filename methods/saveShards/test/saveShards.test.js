@@ -19,11 +19,11 @@ describe("saveShards", () => {
       "testCid",
       "signature",
       [
-        { key: 1, index: 1 },
-        { key: 2, index: 1 },
-        { key: 3, index: 3 },
-        { key: 4, index: 4 },
-        { key: 5, index: 5 },
+        { key: "1", index: "1" },
+        { key: "2", index: "2" },
+        { key: "3", index: "3" },
+        { key: "4", index: "4" },
+        { key: "5", index: "5" },
       ]
     );
     expect(typeof error).toBe("object");
@@ -39,11 +39,11 @@ describe("saveShards", () => {
       "testCid",
       signedMessage,
       [
-        { key: 1, index: 1 },
-        { key: 2, index: 1 },
-        { key: 3, index: 3 },
-        { key: 4, index: 4 },
-        { key: 5, index: 5 },
+        { key: "1", index: "1" },
+        { key: "2", index: "2" },
+        { key: "3", index: "3" },
+        { key: "4", index: "4" },
+        { key: "5", index: "5" },
       ]
     );
     expect(isSaved).toBe(true);

@@ -40,8 +40,9 @@ module.exports.saveShards = async (
           .then((res) => res.data);
       })
     );
+    let temp = data.map((elem, index) => ({ ...elem, data: null }));
     return {
-      isSaved: isEqual(data) && data[0]?.message === "success",
+      isSaved: isEqual(...temp) && data[0]?.message === "success",
       error: null,
     };
   } catch (err) {

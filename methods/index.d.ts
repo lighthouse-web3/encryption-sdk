@@ -21,7 +21,7 @@ export function generate(
 ): Promise<generatedKey>;
 
 export type AuthMessage = {
-  message: string | null;
+  message: string ;
   error: string | ErrorValue | null;
 };
 
@@ -58,7 +58,7 @@ export function saveShards(
   cid: string,
   signature: string,
   keyShards: keyShard[],
-  shareTo: string[]
+  shareTo?: string[]
 ): Promise<{
   isSaved: boolean;
   error: ErrorValue;

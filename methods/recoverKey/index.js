@@ -10,7 +10,6 @@ const isEqual = (...objects) =>
 module.exports.recoverKey = async (keyShards) => {
   if (
     !Array.isArray(keyShards) ||
-    !isEqual(keyShards) ||
     !"index" in keyShards[0] ||
     !"key" in keyShards[0]
   ) {
