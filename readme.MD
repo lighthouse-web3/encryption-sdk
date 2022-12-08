@@ -1,11 +1,11 @@
 # Lighthouse Encryption SDK
 
-Build your trustless, decentralized and fault resistance Application using distributed key shades with threshold cryptography
+Build your trustless, decentralized and fault tolerant Applications using distributed key shards with threshold cryptography
 
 ## Features
 
 - Randomized key shard generation
-- Split supported privateKey and other security keys
+- Shard Key support for privateKey and other security keys
 - Key Reconstruction from shards
 - Fully typed, support in TypeScript
 - Lighthouse Encryption Key storage(Optional 5 nodes)
