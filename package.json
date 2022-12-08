@@ -1,7 +1,7 @@
 {
   "name": "encryption-sdk",
   "version": "1.0.0",
-  "description": "Encryption SDK",
+  "description": "Encryption SDK: Build your trustless, decentralized and fault resistance Application using distributed key shades with threshold cryptography",
   "main": "index.js",
   "author": "xlassix",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "axios": "^1.2.0",
     "bls-eth-wasm": "^1.0.5"
   },
-  "types": "./method/index.d.ts",
+  "types": "./methods/index.d.ts",
   "scripts": {
     "test": "jest  --runInBand",
     "coverage": "jest  --runInBand --coverage"
@@ -31,5 +31,9 @@
     "keySharding",
     "keys",
     "lighthouse"
+  ],
+  "contributors": [
+    "Oki Ayobami (https://github.com/xlassix)",
+    "Ravish Kumar Sharma (https://github.com/ravish1729)"
   ]
 }

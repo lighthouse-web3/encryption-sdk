@@ -11,7 +11,7 @@ export type generatedKey = {
   keyShards: Array<keyShard>;
 };
 
-export type generateInput = {
+export type GenerateInput = {
   threshold?: number;
   keyCount?: number;
 };
