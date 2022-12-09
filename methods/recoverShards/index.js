@@ -24,7 +24,7 @@ module.exports.recoverShards = async (
   try {
     const nodeIndexSelected = randSelect(numOfShards, 5);
     const nodeUrl = nodeIndexSelected.map(
-      (elem) => `${lighthouseBLSNode}:900${elem}/api/retrieveSharedKey/${elem}`
+      (elem) => `${lighthouseBLSNode}/api/retrieveSharedKey/${elem}`
     );
 
     // send encryption key
