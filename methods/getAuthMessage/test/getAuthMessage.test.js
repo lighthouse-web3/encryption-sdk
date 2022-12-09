@@ -13,6 +13,8 @@ describe("getAuthMessage", () => {
     const { message } = await _package.getAuthMessage(
       "0x9a40b8EE3B8Fe7eB621cd142a651560Fa7dF7CBa"
     );
-    expect(typeof message).toBe("string");
+    expect(message).toMatch(
+      /Please sign this message to prove you are owner of this account/i
+    );
   }, 20000);
 });
