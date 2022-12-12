@@ -1,5 +1,9 @@
 const axios = require("axios");
-const { lighthouseBLSNode } = require("../../config");
+const {
+  lighthouseBLSNode,
+  isDev,
+  lighthouseBLSNodeDev,
+} = require("../../config");
 
 function randRange(min, max) {
   return min + Math.floor(Math.random() * (max - min));
@@ -23,10 +27,11 @@ module.exports.recoverShards = async (
 ) => {
   try {
     const nodeIndexSelected = randSelect(numOfShards, 5);
-    const nodeUrl = nodeIndexSelected.map(
-      (elem) => `${lighthouseBLSNode}/api/retrieveSharedKey/${elem}`
+    const nodeUrl = nodeIndexSelected.map((elem) =>
+      isDev
+        ? `${lighthouseBLSNodeDev}:900${elem}/api/retrieveSharedKey/${elem}`
+        : `${lighthouseBLSNode}/api/retrieveSharedKey/${elem}`
     );
-
     // send encryption key
     const recoveredShards = await Promise.all(
       nodeUrl.map((url) => {

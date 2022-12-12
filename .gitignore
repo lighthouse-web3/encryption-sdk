@@ -2,3 +2,4 @@ node_modules
 coverage
 *.tgz
 temp
+yarn-error.log

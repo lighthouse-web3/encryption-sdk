@@ -21,7 +21,7 @@ export function generate(
 ): Promise<generatedKey>;
 
 export type AuthMessage = {
-  message: string ;
+  message: string;
   error: string | ErrorValue | null;
 };
 
@@ -53,29 +53,52 @@ export function recoverShards(
   numOfShards?: number
 ): Promise<RecoverShards>;
 
+export type LightHouseSDKResponse = {
+  isSuccess: boolean;
+  error: ErrorValue;
+};
+
 export function saveShards(
   address: string,
   cid: string,
   signature: string,
   keyShards: keyShard[],
   shareTo?: string[]
-): Promise<{
-  isSaved: boolean;
-  error: ErrorValue;
-}>;
+): Promise<LightHouseSDKResponse>;
 
 export function shardKey(key: string): Promise<{
   isShardable: boolean;
   keyShards: keyShard[];
 }>;
 
-export function saveShards(
-  address:string,
-  cid:string,
-  signature:string,
-  keyShards:string,
-  shareTo? : Array<string>
-): Promise<{
-  isSaved: boolean;
-  error: null;
-}>;
+export function revokeAccess(
+  address: string,
+  cid: string,
+  signature: string,
+  revokeTo: Array<string>
+): Promise<LightHouseSDKResponse>;
+
+export function revokeAccess(
+  address: string,
+  cid: string,
+  signature: string,
+  revokeTo: Array<string>
+): Promise<LightHouseSDKResponse>;
+
+export type ChainType = "EVM" | "evm" | "solana" | "SOLANA";
+
+export function accessControl(
+  address: string,
+  cid: string,
+  signedMessage: string,
+  conditions: { [key: string]: any },
+  aggregator?: string,
+  chainType?: ChainType
+): Promise<LightHouseSDKResponse>;
+
+export function shareToAddress(
+  address: string,
+  cid: string,
+  signedMessage: string,
+  shareTo: Array<string>
+): Promise<LightHouseSDKResponse>;

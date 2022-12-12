@@ -34,7 +34,7 @@ describe("saveShards", () => {
     const authMessage = await getAuthMessage(signer.address);
     const signedMessage = await signer.signMessage(authMessage.message);
 
-    const { error, isSaved } = await _package.saveShards(
+    const { error, isSuccess } = await _package.saveShards(
       signer.address,
       "testCid",
       signedMessage,
@@ -46,7 +46,7 @@ describe("saveShards", () => {
         { key: "5", index: "5" },
       ]
     );
-    expect(isSaved).toBe(true);
+    expect(isSuccess).toBe(true);
     expect(error).toBe(null);
   }, 20000);
 });

@@ -1,5 +1,9 @@
 const axios = require("axios");
-const { lighthouseBLSNode } = require("../../config");
+const {
+  lighthouseBLSNode,
+  lighthouseBLSNodeDev,
+  isDev,
+} = require("../../config");
 
 const isEqual = (...objects) =>
   objects.every((obj) => JSON.stringify(obj) === JSON.stringify(objects[0]));
@@ -16,8 +20,10 @@ module.exports.saveShards = async (
   }
   try {
     const nodeId = [1, 2, 3, 4, 5];
-    const nodeUrl = nodeId.map(
-      (elem) => `${lighthouseBLSNode}:900${elem}/api/setSharedKey/${elem}`
+    const nodeUrl = nodeId.map((elem) =>
+      isDev
+        ? `${lighthouseBLSNodeDev}:900${elem}/api/setSharedKey/${elem}`
+        : `${lighthouseBLSNode}/api/setSharedKey/${elem}`
     );
     // send encryption key
     const data = await Promise.all(
@@ -42,12 +48,12 @@ module.exports.saveShards = async (
     );
     let temp = data.map((elem, index) => ({ ...elem, data: null }));
     return {
-      isSaved: isEqual(...temp) && data[0]?.message === "success",
+      isSuccess: isEqual(...temp) && data[0]?.message === "success",
       error: null,
     };
   } catch (err) {
     return {
-      isSaved: false,
+      isSuccess: false,
       error: err?.response?.data || err.message,
     };
   }

@@ -176,7 +176,7 @@ Backup key to lighthouse's Node
 
 | Name                   | Type                                   | Description                             |
 | ---------------------- | -------------------------------------- |-----------------------------------------|
-| isSaved                | boolean                                | return true is saved                    |
+| isSuccess              | boolean                                | return true is saved                    |
 | error                  | ErrorValue                             | Errors                                  | 
 
 
