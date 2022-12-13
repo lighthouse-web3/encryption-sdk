@@ -198,7 +198,7 @@ async function main() {
 
   const { error, isSaved } = await saveShards(
     signer.address,
-    "testCid",
+    "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
     signedMessage,
     [
       { key: "1", index: "1" },

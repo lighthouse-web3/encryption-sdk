@@ -5,9 +5,7 @@ const {
   lighthouseBLSNodeDev,
 } = require("../../config");
 const { updateConditionSchema } = require("./validator");
-
-const isEqual = (...objects) =>
-  objects.every((obj) => JSON.stringify(obj) === JSON.stringify(objects[0]));
+const { isEqual, isCidReg } = require("../../util/index");
 
 module.exports.accessControl = async (
   address,
@@ -18,6 +16,9 @@ module.exports.accessControl = async (
   chainType = "evm"
 ) => {
   try {
+    if (!isCidReg) {
+      throw new Error("Invalid CID");
+    }
     const { error } = updateConditionSchema.validate({
       address,
       cid,

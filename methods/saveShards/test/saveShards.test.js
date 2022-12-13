@@ -16,7 +16,7 @@ describe("saveShards", () => {
   test("Invalid Signature", async () => {
     const { error } = await _package.saveShards(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       "signature",
       [
         { key: "1", index: "1" },
@@ -36,7 +36,7 @@ describe("saveShards", () => {
 
     const { error, isSuccess } = await _package.saveShards(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       signedMessage,
       [
         { key: "1", index: "1" },

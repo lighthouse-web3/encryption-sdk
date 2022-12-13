@@ -16,7 +16,7 @@ describe("AccessControl", () => {
   test("Invalid Condition", async () => {
     const { error } = await _package.accessControl(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       "swrwwr",
       [
         {
@@ -47,7 +47,7 @@ describe("AccessControl", () => {
   test("Invalid Signature", async () => {
     const { error } = await _package.accessControl(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       "swrwwr",
       [
         {
@@ -80,7 +80,7 @@ describe("AccessControl", () => {
     const signedMessage = await signer.signMessage(authMessage.message);
     const { error, isSuccess } = await _package.accessControl(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       signedMessage,
       [
         {

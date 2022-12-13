@@ -22,7 +22,7 @@ describe("share File To address", () => {
     const signedMessage = await signer2.signMessage(authMessage.message);
     const { isSuccess, error } = await _package.shareToAddress(
       signer2.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       signedMessage,
       ["0xF0Bc72fA04aea04d04b1fA80B359Adb566E1c8B1"]
     );
@@ -35,7 +35,7 @@ describe("share File To address", () => {
     const signedMessage = await signer.signMessage(authMessage.message);
     const { error, isSuccess } = await _package.shareToAddress(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       signedMessage,
       ["0xF0Bc72fA04aea04d04b1fA80B359Adb566E1c8B1"]
     );

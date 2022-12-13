@@ -22,7 +22,7 @@ describe("revoke file address", () => {
     const signedMessage = await signer.signMessage(authMessage.message);
     const { error, isSuccess } = await _package.revokeAccess(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       signedMessage,
       [signer2.address]
     );

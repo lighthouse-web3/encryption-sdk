@@ -4,8 +4,7 @@ if (typeof window === "undefined") {
 } else {
   bls = require("bls-eth-wasm/browser");
 }
-const isEqual = (...objects) =>
-  objects.every((obj) => JSON.stringify(obj) === JSON.stringify(objects[0]));
+
 
 module.exports.recoverKey = async (keyShards) => {
   if (

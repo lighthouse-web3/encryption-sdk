@@ -4,9 +4,7 @@ const {
   isDev,
   lighthouseBLSNodeDev,
 } = require("../../config");
-
-const isEqual = (...objects) =>
-  objects.every((obj) => JSON.stringify(obj) === JSON.stringify(objects[0]));
+const { isEqual, isCidReg } = require("../../util/index");
 
 module.exports.shareToAddress = async (
   address,
@@ -15,6 +13,9 @@ module.exports.shareToAddress = async (
   shareTo
 ) => {
   try {
+    if (!isCidReg) {
+      throw new Error("Invalid CID");
+    }
     const nodeId = [1, 2, 3, 4, 5];
     const nodeUrl = nodeId.map((elem) =>
       isDev

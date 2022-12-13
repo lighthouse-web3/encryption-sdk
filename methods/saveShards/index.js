@@ -4,9 +4,7 @@ const {
   lighthouseBLSNodeDev,
   isDev,
 } = require("../../config");
-
-const isEqual = (...objects) =>
-  objects.every((obj) => JSON.stringify(obj) === JSON.stringify(objects[0]));
+const { isEqual, isCidReg } = require("../../util/index");
 
 module.exports.saveShards = async (
   address,
@@ -15,6 +13,9 @@ module.exports.saveShards = async (
   keyShards,
   shareTo = []
 ) => {
+  if (!isCidReg) {
+    throw new Error("Invalid CID");
+  }
   if (!Array.isArray(keyShards) || keyShards.length != 5) {
     throw new Error("keyShards must be an array of 5 objects");
   }

@@ -16,7 +16,7 @@ describe("recover Shards", () => {
   test("Invalid Signature", async () => {
     const { error } = await _package.recoverShards(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       "signature",
       5
     );
@@ -30,17 +30,17 @@ describe("recover Shards", () => {
 
     const { error, shards } = await _package.recoverShards(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       signedMessage,
       5
     );
     expect(error).toBe(null);
     expect(shards).toEqual([
-      { index: 1, key: 1 },
-      { index: 1, key: 2 },
-      { index: 3, key: 3 },
-      { index: 4, key: 4 },
-      { index: 5, key: 5 },
+      { index: "1", key: "1" },
+      { index: "2", key: "2" },
+      { index: "3", key: "3" },
+      { index: "4", key: "4" },
+      { index: "5", key: "5" },
     ]);
   }, 20000);
 
@@ -55,7 +55,7 @@ describe("recover Shards", () => {
 
     const { error, shards } = await _package.recoverShards(
       signer.address,
-      "testCid",
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
       signedMessage,
       5
     );
