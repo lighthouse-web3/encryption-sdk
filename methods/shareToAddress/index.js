@@ -13,7 +13,7 @@ module.exports.shareToAddress = async (
   shareTo
 ) => {
   try {
-    if (!isCidReg) {
+    if (!isCidReg(cid)) {
       throw new Error("Invalid CID");
     }
     const nodeId = [1, 2, 3, 4, 5];

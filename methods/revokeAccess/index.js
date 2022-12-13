@@ -9,7 +9,7 @@ const { isEqual, isCidReg } = require("../../util/index");
 
 module.exports.revokeAccess = async (address, cid, signature, revokeTo) => {
   try {
-    if (!isCidReg) {
+    if (!isCidReg(cid)) {
       throw new Error("Invalid CID");
     }
     const nodeId = [1, 2, 3, 4, 5];

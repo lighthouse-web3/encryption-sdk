@@ -13,13 +13,13 @@ module.exports.saveShards = async (
   keyShards,
   shareTo = []
 ) => {
-  if (!isCidReg) {
-    throw new Error("Invalid CID");
-  }
-  if (!Array.isArray(keyShards) || keyShards.length != 5) {
-    throw new Error("keyShards must be an array of 5 objects");
-  }
   try {
+    if (!Array.isArray(keyShards) || keyShards.length != 5) {
+      throw new Error("keyShards must be an array of 5 objects");
+    }
+    if (!isCidReg(cid)) {
+      throw new Error("Invalid CID");
+    }
     const nodeId = [1, 2, 3, 4, 5];
     const nodeUrl = nodeId.map((elem) =>
       isDev

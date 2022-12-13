@@ -29,4 +29,34 @@ describe("revoke file address", () => {
     expect(error).toBe(null);
     expect(isSuccess).toBe(true);
   }, 20000);
+
+  test("invalid Cid", async () => {
+    const authMessage = await getAuthMessage(signer.address);
+    const signedMessage = await signer.signMessage(authMessage.message);
+
+    const { error, isSuccess } = await _package.revokeAccess(
+      signer.address,
+      "cid",
+      signedMessage,
+      [signer2.address]
+    );
+    expect(isSuccess).toBe(false);
+    expect(error).toMatch(/invalid Cid/i);
+  }, 20000);
+
+  test("invalid Access", async () => {
+    const authMessage = await getAuthMessage(signer2.address);
+    const signedMessage = await signer2.signMessage(authMessage.message);
+
+    const { error, isSuccess } = await _package.revokeAccess(
+      signer2.address,
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+      signedMessage,
+      [signer2.address]
+    );
+    expect(isSuccess).toBe(false);
+    expect(error.message).toMatch(/Access Denied/i);
+  }, 20000);
+
+  
 });

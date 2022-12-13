@@ -49,4 +49,42 @@ describe("saveShards", () => {
     expect(isSuccess).toBe(true);
     expect(error).toBe(null);
   }, 20000);
+
+  test("save Key", async () => {
+    const authMessage = await getAuthMessage(signer.address);
+    const signedMessage = await signer.signMessage(authMessage.message);
+
+    const { error, isSuccess } = await _package.saveShards(
+      signer.address,
+      "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQJ",
+      signedMessage,
+      [
+        { key: "1", index: "1" },
+        { key: "2", index: "2" },
+        { key: "3", index: "3" },
+      ]
+    );
+    expect(isSuccess).toBe(false);
+    expect(error).toMatch(/keyShards must be an array of 5 objects/i);
+  }, 20000);
+
+  test("invalid Cid", async () => {
+    const authMessage = await getAuthMessage(signer.address);
+    const signedMessage = await signer.signMessage(authMessage.message);
+
+    const { error, isSuccess } = await _package.saveShards(
+      signer.address,
+      "cid",
+      signedMessage,
+      [
+        { key: "1", index: "1" },
+        { key: "2", index: "2" },
+        { key: "3", index: "3" },
+        { key: "4", index: "4" },
+        { key: "5", index: "5" },
+      ]
+    );
+    expect(isSuccess).toBe(false);
+    expect(error).toMatch(/invalid Cid/i);
+  }, 20000);
 });

@@ -40,7 +40,7 @@ module.exports.recoverShards = async (
             url,
             {
               address,
-              cid: cid,
+              cid,
             },
             {
               headers: {
@@ -49,7 +49,7 @@ module.exports.recoverShards = async (
             }
           )
           .then((res) => {
-            return res.data.payload;
+            return res?.data?.payload;
           });
       })
     );
@@ -58,6 +58,12 @@ module.exports.recoverShards = async (
       error: null,
     };
   } catch (err) {
+    if (err?.response?.data?.message.includes("null")) {
+      return {
+        shards: [],
+        error: `cid not found`,
+      };
+    }
     return {
       shards: [],
       error: err?.response?.data || err.message,

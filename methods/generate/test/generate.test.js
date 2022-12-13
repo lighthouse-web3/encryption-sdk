@@ -5,3 +5,4 @@ test("Generate Key", async () => {
   expect(typeof masterKey).toBe("string");
   expect(keyShards.length).toBe(5);
 }, 20000);
+

@@ -3,7 +3,7 @@ const _package = require("..");
 describe("getAuthMessage", () => {
   test("Invalid Address", async () => {
     const { error } = await _package.getAuthMessage(
-      "0x9a40b8EE3B8Fe7eB621cd142a651560Fa7dF7C"
+      "0x9a40b8EE3B8Fe7eB621cd142a651560Fa7"
     );
     expect(typeof error).toBe("object");
     expect(error?.message).toBe("Invalid address");

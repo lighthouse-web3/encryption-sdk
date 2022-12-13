@@ -16,7 +16,7 @@ module.exports.accessControl = async (
   chainType = "evm"
 ) => {
   try {
-    if (!isCidReg) {
+    if (!isCidReg(cid)) {
       throw new Error("Invalid CID");
     }
     const { error } = updateConditionSchema.validate({
