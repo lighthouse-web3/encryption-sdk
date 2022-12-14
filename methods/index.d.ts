@@ -39,13 +39,6 @@ type RecoverShards = {
   error: ErrorValue;
 };
 
-export function revokeAccess(
-  address: string,
-  cid: string,
-  signature: string,
-  revokeTo: string[]
-): Promise<{ error: ErrorValue; revoked: boolean }>;
-
 export function recoverShards(
   address: string,
   cid: string,
@@ -70,13 +63,6 @@ export function shardKey(key: string): Promise<{
   isShardable: boolean;
   keyShards: keyShard[];
 }>;
-
-export function revokeAccess(
-  address: string,
-  cid: string,
-  signature: string,
-  revokeTo: Array<string>
-): Promise<LightHouseSDKResponse>;
 
 export function revokeAccess(
   address: string,

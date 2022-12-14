@@ -32,12 +32,18 @@ module.exports.saveShards = async (
         return axios
           .post(
             url,
-            {
-              address,
-              cid,
-              payload: keyShards[index],
-              shareTo,
-            },
+            shareTo.length > 0
+              ? {
+                  address,
+                  cid,
+                  payload: keyShards[index],
+                  sharedTo: shareTo,
+                }
+              : {
+                  address,
+                  cid,
+                  payload: keyShards[index],
+                },
             {
               headers: {
                 Authorization: "Bearer " + signature,
