@@ -182,7 +182,7 @@ Backup key to lighthouse's Node
 #### Demo
 
 ```javascript
-import { getAuthMessage, saveShards } from "lighthouse-encryption-sdk";
+import { getAuthMessage, saveShards, generate } from "lighthouse-encryption-sdk";
 import { ethers } from "ethers";
 
 async function main() {
@@ -191,6 +191,8 @@ async function main() {
     "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
   );
 
+  const { masterKey, keyShards } = await generate();  
+
   const authMessage = await getAuthMessage(signer.address);
   const signedMessage = await signer.signMessage(authMessage.message);
 
@@ -198,13 +200,7 @@ async function main() {
     signer.address,
     "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
     signedMessage,
-    [
-      { key: "1", index: "1" },
-      { key: "2", index: "2" },
-      { key: "3", index: "3" },
-      { key: "4", index: "4" },
-      { key: "5", index: "5" },
-    ]
+    keyShards
   );
 
   console.log(error === null) // true;
@@ -253,6 +249,7 @@ import {
   saveShards,
   AuthMessage,
   shareToAddress,
+  generate,
 } from "lighthouse-encryption-sdk";
 import { ethers } from "ethers";
 
@@ -264,6 +261,7 @@ async function main() {
     "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c99"
   );
   const cid = "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwAV";
+  const { masterKey, keyShards } = await generate();
 
   //save file
   {
@@ -274,13 +272,7 @@ async function main() {
       signer.address,
       cid,
       signedMessage,
-      [
-        { key: "1", index: "1" },
-        { key: "2", index: "2" },
-        { key: "3", index: "3" },
-        { key: "4", index: "4" },
-        { key: "5", index: "5" },
-      ]
+      keyShards
     );
     console.log(error == null); //true;
     console.log(isSuccess == true); //true;
@@ -362,6 +354,7 @@ import {
   saveShards,
   AuthMessage,
   revokeAccess,
+  generate
   } from "lighthouse-encryption-sdk";
 import { ethers } from "ethers";
 
@@ -373,6 +366,7 @@ async function main() {
     "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c99"
   );
   const cid = "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwVV";
+  const { masterKey, keyShards } = await generate();
 
   //save file
   {
@@ -383,13 +377,7 @@ async function main() {
       signer.address,
       cid,
       signedMessage,
-      [
-        { key: "1", index: "1" },
-        { key: "2", index: "2" },
-        { key: "3", index: "3" },
-        { key: "4", index: "4" },
-        { key: "5", index: "5" },
-      ],
+      keyShards,
       [
         "0x95CF5354519a6ad2bD7e53fe7763201dfB24bFE4",
         "0xb46D27B3BfC07D27702EBddbe197Fc9276b70581",
@@ -517,6 +505,7 @@ import {
   saveShards,
   AuthMessage,
   accessControl,
+  generate
 } from "lighthouse-encryption-sdk";
 import { ethers } from "ethers";
 
@@ -533,18 +522,13 @@ async function main() {
   {
     const authMessage: AuthMessage = await getAuthMessage(signer.address);
     const signedMessage = await signer.signMessage(authMessage.message);
+    const { masterKey, keyShards } = await generate();
 
     const { error, isSuccess } = await saveShards(
       signer.address,
       cid,
       signedMessage,
-      [
-        { key: "1", index: "1" },
-        { key: "2", index: "2" },
-        { key: "3", index: "3" },
-        { key: "4", index: "4" },
-        { key: "5", index: "5" },
-      ]
+      keyShards
     );
     console.log(error == null); //true;
     console.log(isSuccess == true); //true;
