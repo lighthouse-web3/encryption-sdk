@@ -55,7 +55,7 @@ export function saveShards(
   address: string,
   cid: string,
   signature: string,
-  keyShards: keyShard[],
+  keyShards: keyShard[] | Array<any>,
   shareTo?: string[]
 ): Promise<LightHouseSDKResponse>;
 
