@@ -1,6 +1,6 @@
 {
-  "name": "encryption-sdk",
-  "version": "0.0.1",
+  "name": "@lighthouse-web3/encrypt",
+  "version": "0.1.0",
   "description": "Encryption SDK: Build your trustless, decentralized and fault resistance Application using distributed key shades with threshold cryptography",
   "main": "index.js",
   "author": "xlassix",
@@ -21,7 +21,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lighthouse-web3"
+    "url": "https://github.com/lighthouse-web3/encryption-sdk.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "BLS",
