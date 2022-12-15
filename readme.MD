@@ -16,9 +16,9 @@ Build your trustless, decentralized and fault tolerant Applications using distri
 Just use your favorite package manager to add `lighthouse-encryption-sdk` to your project:
 
 ```sh
-yarn add lighthouse-encryption-sdk
+yarn add @lighthouse-web3/kavach
 
-npm i --save lighthouse-encryption-sdk
+npm i @lighthouse-web3/kavach
 
 ```
 
@@ -48,7 +48,7 @@ This method generates randomized key shards
 
 ```javascript
 
-import { generate } from "lighthouse-encryption-sdk";
+import { generate } from "@lighthouse-web3/kavach";
 
 async function main() {
 const { masterKey, keyShards } = await generate();
@@ -86,7 +86,7 @@ This method recovers the master key from the shards generated
 #### Demo
 
 ```javascript
-import { generate, recoverKey } from "lighthouse-encryption-sdk";
+import { generate, recoverKey } from "@lighthouse-web3/kavach";
 
 async function main() {
   const { masterKey, keyShards } = await generate();
@@ -128,7 +128,7 @@ shard existing Key into shards
 #### Demo
 
 ```javascript
-import { shardKey, recoverKey } from "lighthouse-encryption-sdk";
+import { shardKey, recoverKey } from "@lighthouse-web3/kavach";
 
 async function main() {
   // known key customly generated or from ether random wallet privateKey
@@ -182,12 +182,11 @@ Backup key to lighthouse's Node
 #### Demo
 
 ```javascript
-import { getAuthMessage, saveShards, generate } from "lighthouse-encryption-sdk";
+import { getAuthMessage, saveShards, generate } from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
-  const provider = ethers.getDefaultProvider();
-  let signer = new ethers.Wallet(
+  const signer = new ethers.Wallet(
     "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
   );
 
@@ -250,7 +249,7 @@ import {
   AuthMessage,
   shareToAddress,
   generate,
-} from "lighthouse-encryption-sdk";
+} from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
@@ -355,7 +354,7 @@ import {
   AuthMessage,
   revokeAccess,
   generate
-  } from "lighthouse-encryption-sdk";
+  } from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
@@ -506,7 +505,7 @@ import {
   AuthMessage,
   accessControl,
   generate
-} from "lighthouse-encryption-sdk";
+} from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
