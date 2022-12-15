@@ -1,4 +1,4 @@
-# Lighthouse Encryption SDK
+# Lighthouse Encryption SDK <img src="https://img.shields.io/badge/BETA-v0.1-green"/>
 
 Build your trustless, decentralized and fault tolerant Applications using distributed key shards with threshold cryptography
 
@@ -111,9 +111,9 @@ shard existing Key into shards
 
 #### Parameters
 
-| Name                   | Type                                   | Default  | Description                     |
-| ---------------------- | -------------------------------------- | -------- | --------------------------------|
-| key                    | string                                 |          | 32 byte string or key           |
+| Name                   | Type                                   | Default  | Description                                         |
+| ---------------------- | -------------------------------------- | -------- | --------------------------------------------------- |
+| key                    | string                                 |          | 32 byte string or key                               |
 | threshold              | number(optional)                       | 3        | minimum amount of key required to recover master key|
 | keyCount               | number(optional)                       | 5        | number of shades to be generated (**Note**: *must be greater than or equal to threshold*)|
 
@@ -154,7 +154,7 @@ main()
 
 ```
 
-- ###  _saveShards( address: string, cid: string, signature: string, keyShards: keyShard[5], : string[])_
+- ###  _saveShards( address: string, cid: string, signature: string, keyShards: keyShard[5] | any[5], shareTo : string[])_
 
 Backup key to lighthouse's Node
 
