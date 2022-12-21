@@ -1,6 +1,6 @@
-# Lighthouse Encryption SDK <img src="https://img.shields.io/badge/BETA-v0.1-green"/>
+# Kavach <img src="https://img.shields.io/badge/BETA-v0.1-green"/>
 
-Build your trustless, decentralized and fault tolerant Applications using distributed key shards with threshold cryptography
+Kavach is encryption sdk that allows you to build your trustless, decentralized and fault tolerant Applications using distributed key shards with threshold cryptography
 
 ## Features
 
