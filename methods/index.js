@@ -1,4 +1,5 @@
 const { generate } = require("./generate");
+const { getJWT } = require("./getJWT");
 const { getAuthMessage } = require("./getAuthMessage");
 const { recoverKey } = require("./recoverKey");
 const { recoverShards } = require("./recoverShards");
@@ -10,6 +11,7 @@ const { shareToAddress } = require("./shareToAddress");
 
 module.exports = {
   generate,
+  getJWT,
   getAuthMessage,
   recoverShards,
   revokeAccess,
