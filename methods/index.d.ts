@@ -44,7 +44,7 @@ type WithPrefix<T extends string> = `${T}${string}`;
 export function recoverShards(
   address: string,
   cid: string,
-  signature: SignedMessage|JWT,
+  authSignedMessage: SignedMessage|JWT,
   numOfShards?: number
 ): Promise<RecoverShards>;
 
@@ -59,7 +59,7 @@ export type JWT=WithPrefix<'jwt:'>;
 export function saveShards(
   address: string,
   cid: string,
-  signature: SignedMessage|JWT,
+  authSignedMessage: SignedMessage|JWT,
   keyShards: keyShard[] | Array<any>,
   shareTo?: string[]
 ): Promise<LightHouseSDKResponse>;
@@ -72,7 +72,7 @@ export function shardKey(key: string): Promise<{
 export function revokeAccess(
   address: string,
   cid: string,
-  signature: SignedMessage|JWT,
+  authSignedMessage: SignedMessage|JWT,
   revokeTo: Array<string>
 ): Promise<LightHouseSDKResponse>;
 
@@ -81,7 +81,7 @@ export type ChainType = "EVM" | "evm" | "solana" | "SOLANA";
 export function accessControl(
   address: string,
   cid: string,
-  signedMessage: SignedMessage|JWT,
+  authSignedMessage: SignedMessage|JWT,
   conditions: { [key: string]: any },
   aggregator?: string,
   chainType?: ChainType
@@ -90,11 +90,11 @@ export function accessControl(
 export function shareToAddress(
   address: string,
   cid: string,
-  signedMessage: SignedMessage|JWT,
+  authSignedMessage: SignedMessage|JWT,
   shareTo: Array<string>
 ): Promise<LightHouseSDKResponse>;
 
 export function getJWT(
 address:string,
-signedMessage: SignedMessage|JWT,
+signedMessage: SignedMessage,
 ):Promise<{JWT:string|null,error:ErrorValue}>
