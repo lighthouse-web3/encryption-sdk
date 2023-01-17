@@ -85,6 +85,9 @@ const SupportedChains = {
     "FVM",
     "Wallaby",
     "Calibration",
+    "Shardeum",
+    "Shardeum_Lib1",
+    "Shardeum_Lib2",
   ],
   SOLANA: ["DEVNET", "TESTNET", "MAINNET"],
 };
