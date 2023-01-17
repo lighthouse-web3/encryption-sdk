@@ -10,7 +10,6 @@ Kavach is encryption sdk that allows you to build your trustless, decentralized 
 - Fully typed, support in TypeScript
 - Lighthouse Encryption Key storage(Optional 5 nodes)
 
-
 ## Install
 
 Just use your favorite package manager to add `lighthouse-encryption-sdk` to your project:
@@ -22,48 +21,44 @@ npm i @lighthouse-web3/kavach
 
 ```
 
-
 ## Methods
 
 - ### _generate ( threshold?: number, keyCount?: number)_
 
-This method generates randomized key shards 
+This method generates randomized key shards
 
 #### Parameters
 
-| Name                   | Type                                   | Default  | Description                     |
-| ---------------------- | -------------------------------------- | -------  |--------------------------------|
-| threshold              | number(optional)                       | 3        | minimum amount of key required to recover master key|
-| keyCount               | number(optional)                       | 5        | number of shades to be generated (**Note**: *must be greater than or equal to threshold*)|
+| Name      | Type             | Default | Description                                                                               |
+| --------- | ---------------- | ------- | ----------------------------------------------------------------------------------------- |
+| threshold | number(optional) | 3       | minimum amount of key required to recover master key                                      |
+| keyCount  | number(optional) | 5       | number of shades to be generated (**Note**: _must be greater than or equal to threshold_) |
 
 #### returns
 
-| Name                   | Type                                   | Description                    |
-| ---------------------- | -------------------------------------- |--------------------------------|
-| masterKey              | string                                 | 32 byte string or key          |
-| keyShards              | {key:string,index:string}[]            | key shards                     | 
-
+| Name      | Type                        | Description           |
+| --------- | --------------------------- | --------------------- |
+| masterKey | string                      | 32 byte string or key |
+| keyShards | {key:string,index:string}[] | key shards            |
 
 #### Demo
 
 ```javascript
-
 import { generate } from "@lighthouse-web3/kavach";
 
 async function main() {
-const { masterKey, keyShards } = await generate();
-console.log(`masterKey: ${masterKey}`);
-console.log(`keyShards:`, keyShards);
+  const { masterKey, keyShards } = await generate();
+  console.log(`masterKey: ${masterKey}`);
+  console.log(`keyShards:`, keyShards);
 }
 
 main()
-.then(() => process.exit(0))
-.catch((error) => {
+  .then(() => process.exit(0))
+  .catch((error) => {
     console.error(error);
     process.exit(1);
-});
+  });
 ```
-
 
 - ### _recoverKey (keyShards: keyShard[])_
 
@@ -71,17 +66,16 @@ This method recovers the master key from the shards generated
 
 #### Parameters
 
-| Name                   | Type                                   | Description                     |
-| ---------------------- | -------------------------------------- | --------------------------------|
-| keyShard               | {key:string,index:string}[]            | minimum amount of key required to recover master key|
+| Name     | Type                        | Description                                          |
+| -------- | --------------------------- | ---------------------------------------------------- |
+| keyShard | {key:string,index:string}[] | minimum amount of key required to recover master key |
 
 #### returns
 
-| Name                   | Type                                   | Description                    |
-| ---------------------- | -------------------------------------- |--------------------------------|
-| masterKey              | string                                 | 32 byte string or key          |
-| error                  | ErrorValue | null                      | error                          | 
-
+| Name      | Type       | Description           |
+| --------- | ---------- | --------------------- | ----- |
+| masterKey | string     | 32 byte string or key |
+| error     | ErrorValue | null                  | error |
 
 #### Demo
 
@@ -101,29 +95,26 @@ main()
     console.error(error);
     process.exit(1);
   });
-
 ```
 
-
-- ###  _shardKey (key: string,threshold?: number, keyCount?: number)_
+- ### _shardKey (key: string,threshold?: number, keyCount?: number)_
 
 shard existing Key into shards
 
 #### Parameters
 
-| Name                   | Type                                   | Default  | Description                                         |
-| ---------------------- | -------------------------------------- | -------- | --------------------------------------------------- |
-| key                    | string                                 |          | 32 byte string or key                               |
-| threshold              | number(optional)                       | 3        | minimum amount of key required to recover master key|
-| keyCount               | number(optional)                       | 5        | number of shades to be generated (**Note**: *must be greater than or equal to threshold*)|
+| Name      | Type             | Default | Description                                                                               |
+| --------- | ---------------- | ------- | ----------------------------------------------------------------------------------------- |
+| key       | string           |         | 32 byte string or key                                                                     |
+| threshold | number(optional) | 3       | minimum amount of key required to recover master key                                      |
+| keyCount  | number(optional) | 5       | number of shades to be generated (**Note**: _must be greater than or equal to threshold_) |
 
 #### returns
 
-| Name                   | Type                                   | Description                    |
-| ---------------------- | -------------------------------------- |--------------------------------|
-| isShardable            | boolean                                | return true is the key could be sharded |
-| keyShards              | keyShard[]                             | shards                              | 
-
+| Name        | Type       | Description                             |
+| ----------- | ---------- | --------------------------------------- |
+| isShardable | boolean    | return true is the key could be sharded |
+| keyShards   | keyShard[] | shards                                  |
 
 #### Demo
 
@@ -151,33 +142,28 @@ main()
     console.error(error);
     process.exit(1);
   });
-
 ```
 
-- ###  _saveShards( address: string, cid: string, signature: string, keyShards: keyShard[5] | any[5], shareTo : string[])_
+- ### _saveShards( address: string, cid: string, authSignedMessage: string, keyShards: keyShard[5] | any[5], shareTo : string[])_
 
 Backup key to lighthouse's Node
 
 #### Parameters
 
-
-| Name                   | Type                                     | Default  | Description                              |
-| ---------------------- | ---------------------------------------- | -------- | -----------------------------------------|
-| address                | string                                   |          | address of the owner of the key          |
-| cid                    | string                                   |          | unique id or file CID                    |
-| signature              | string                                   |          | signed Message gotten from getAuthMessage|
-| keyShards              | Array<{key:string; index:string}>        |          | An array of 5 key shards/ element        |
-| shareTo                | Array< address >(Options)                |   []     | An array of address                      |
-
-
+| Name              | Type                              | Default | Description                                   |
+| ----------------- | --------------------------------- | ------- | --------------------------------------------- |
+| address           | string                            |         | address of the owner of the key               |
+| cid               | string                            |         | unique id or file CID                         |
+| authSignedMessage | string                            |         | signed Message gotten from getAuthMessage/JWT |
+| keyShards         | Array<{key:string; index:string}> |         | An array of 5 key shards/ element             |
+| shareTo           | Array< address >(Options)         | []      | An array of address                           |
 
 #### returns
 
-| Name                   | Type                                   | Description                             |
-| ---------------------- | -------------------------------------- |-----------------------------------------|
-| isSuccess              | boolean                                | return true is saved                    |
-| error                  | ErrorValue                             | Errors                                  | 
-
+| Name      | Type       | Description          |
+| --------- | ---------- | -------------------- |
+| isSuccess | boolean    | return true is saved |
+| error     | ErrorValue | Errors               |
 
 #### Demo
 
@@ -190,7 +176,7 @@ async function main() {
     "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
   );
 
-  const { masterKey, keyShards } = await generate();  
+  const { masterKey, keyShards } = await generate();
 
   const authMessage = await getAuthMessage(signer.address);
   const signedMessage = await signer.signMessage(authMessage.message);
@@ -202,8 +188,8 @@ async function main() {
     keyShards
   );
 
-  console.log(error === null) // true;
-  console.log(isSuccess === true) //true;
+  console.log(error === null); // true;
+  console.log(isSuccess === true); //true;
 }
 
 main()
@@ -212,38 +198,33 @@ main()
     console.error(error);
     process.exit(1);
   });
-
 ```
 
-
-- ###  _shareToAddress(address: string, cid: string, signature: string, shareTo: Array<string> )_
+- ### _shareToAddress(address: string, cid: string, authSignedMessage: string, shareTo: Array<string> )_
 
 share file Key to address
 
 #### Parameters
 
-
-| Name                   | Type                                     | Default  | Description                                     |
-| ---------------------- | ---------------------------------------- | -------- | ------------------------------------------------|
-| address                | string                                   |          | address of the owner of the key                 |
-| cid                    | string                                   |          | unique id or file CID                           |
-| signature              | string                                   |          | signed Message gotten from getAuthMessage       |
-| shareTo                | Array< address >(Options)                |   []     | An array of address to share file key shards to |
-
-
+| Name              | Type                      | Default | Description                                     |
+| ----------------- | ------------------------- | ------- | ----------------------------------------------- |
+| address           | string                    |         | address of the owner of the key                 |
+| cid               | string                    |         | unique id or file CID                           |
+| authSignedMessage | string                    |         | signed Message gotten from getAuthMessage/ JWT  |
+| shareTo           | Array< address >(Options) | []      | An array of address to share file key shards to |
 
 #### returns
 
-| Name                   | Type                                   | Description                             |
-| ---------------------- | -------------------------------------- |-----------------------------------------|
-| isSuccess              | boolean                                | return true if successful               |
-| error                  | ErrorValue                             | Errors                                  | 
+| Name      | Type       | Description               |
+| --------- | ---------- | ------------------------- |
+| isSuccess | boolean    | return true if successful |
+| error     | ErrorValue | Errors                    |
 
 #### Demo
 
 ```javascript
 import {
- recoverShards,
+  recoverShards,
   getAuthMessage,
   saveShards,
   AuthMessage,
@@ -316,33 +297,27 @@ main()
     console.error(error);
     process.exit(1);
   });
-
 ```
 
-
-
-- ###  _revokeAccess(address: string, cid: string, signature: string, revokeTo: Array<string> )_
+- ### _revokeAccess(address: string, cid: string, authSignedMessage: string, revokeTo: Array<string> )_
 
 revoke access to addresses with direct access
 
 #### Parameters
 
-
-| Name                   | Type                                     | Default  | Description                                     |
-| ---------------------- | ---------------------------------------- | -------- | ------------------------------------------------|
-| address                | string                                   |          | address of the owner of the key                 |
-| cid                    | string                                   |          | unique id or file CID                           |
-| signature              | string                                   |          | signed Message gotten from getAuthMessage       |
-| revokeTo               | Array< address >(Options)                |   []     | An array of address to remove for Direct access |
-
-
+| Name              | Type                      | Default | Description                                     |
+| ----------------- | ------------------------- | ------- | ----------------------------------------------- |
+| address           | string                    |         | address of the owner of the key                 |
+| cid               | string                    |         | unique id or file CID                           |
+| authSignedMessage | string                    |         | signed Message gotten from getAuthMessage /JWT  |
+| revokeTo          | Array< address >(Options) | []      | An array of address to remove for Direct access |
 
 #### returns
 
-| Name                   | Type                                   | Description                             |
-| ---------------------- | -------------------------------------- |-----------------------------------------|
-| isSuccess              | boolean                                | return true if successful               |
-| error                  | ErrorValue                             | Errors                                  | 
+| Name      | Type       | Description               |
+| --------- | ---------- | ------------------------- |
+| isSuccess | boolean    | return true if successful |
+| error     | ErrorValue | Errors                    |
 
 #### Demo
 
@@ -353,8 +328,8 @@ import {
   saveShards,
   AuthMessage,
   revokeAccess,
-  generate
-  } from "@lighthouse-web3/kavach";
+  generate,
+} from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
@@ -443,68 +418,65 @@ main()
     console.error(error);
     process.exit(1);
   });
-
 ```
 
+- ### _accessCondition( address: string, cid: string, authSignedMessage: string, conditions: Condition[], aggregator?: string,chainType?: ChainType)_
 
+Add more granular access Condition based on on-Chain Data, this supports custom EVM contracts, block timestamp and so on.
+with support for over 15 Ethereum Virtual Machine (EVM) based networks and based solana RPC calls
 
-- ###  _accessCondition(  address: string, cid: string, signedMessage: string, conditions: Condition[], aggregator?: string,chainType?: ChainType)_
+- Ethereum
+- Rinkeby
+- Polygon
+- Fantom
+- FantomTest
+- AVAX
+- Fuji
+- BSC
+- BSCTest
+- Optimism
+- OptimismGoerli
+- OptimismKovan
+- Mumbai
+- FVM
+- Wallaby
+- Calibration
+- Shardeum
 
-Add more  granular access Condition based on on-Chain Data, this supports custom EVM contracts, block timestamp and so on.
-with support for over 15 Ethereum Virtual Machine (EVM) based networks and based solana RPC calls 
-  -  Ethereum
-  -  Rinkeby
-  -  Polygon
-  -  Fantom
-  -  FantomTest
-  -  AVAX
-  -  Fuji
-  -  BSC
-  -  BSCTest
-  -  Optimism
-  -  OptimismGoerli
-  -  OptimismKovan
-  -  Mumbai
-  -  FVM
-  -  Wallaby
-  -  Calibration
+Solana
 
-  Solana
-  - DEVNET
-  - TESTNET
-  - MAINNET
+- DEVNET
+- TESTNET
+- MAINNET
 
 #### Parameters
 
-
-| Name                   | Type                                     |Description                                                                     |
-| ---------------------- | ---------------------------------------- | -------------------------------------------------------------------------------|
-| address                | string                                   |address of the owner of the key                                                 |
-| cid                    | string                                   |unique id or file CID                                                           |
-| signedMessage          | string                                   |signed Message gotten from getAuthMessage                                       |
-| conditions             | Array< Condition >                       | This Array contains a list of conditions to be tested on chain                 |
-| aggregator             | string                                   |This is a template string that structures how the conditions should be computed |  
-| chainType              | string                                   | This defaults to EVM and can be set to Solana for solana conditions            |      
-
+| Name              | Type               | Description                                                                     |
+| ----------------- | ------------------ | ------------------------------------------------------------------------------- |
+| address           | string             | Address of the owner of the key                                                 |
+| cid               | string             | Unique id or file CID                                                           |
+| authSignedMessage | string             | Signed Message gotten from getAuthMessage /JWT                                  |
+| conditions        | Array< Condition > | This Array contains a list of conditions to be tested on chain                  |
+| aggregator        | string             | This is a template string that structures how the conditions should be computed |
+| chainType         | string             | This defaults to EVM and can be set to Solana for solana conditions             |
 
 #### returns
 
-| Name                   | Type                                   | Description                             |
-| ---------------------- | -------------------------------------- |-----------------------------------------|
-| isSuccess              | boolean                                | return true if successful               |
-| error                  | ErrorValue                             | Errors                                  | 
+| Name      | Type       | Description               |
+| --------- | ---------- | ------------------------- |
+| isSuccess | boolean    | return true if successful |
+| error     | ErrorValue | Errors                    |
 
 #### Demo
 
 ```javascript
-
 import {
   recoverShards,
   getAuthMessage,
   saveShards,
   AuthMessage,
   accessControl,
-  generate
+  generate,
 } from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
@@ -592,6 +564,94 @@ async function main() {
     console.log(error == null); //true;
     console.log(shards.length === 3); // true;
   }
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+## Auth Methods
+
+- ### _getAuthMessage( address: string)_
+
+Get Consensus Message to Sign
+
+#### Parameters
+
+| Name    | Type   | Default | Description                     |
+| ------- | ------ | ------- | ------------------------------- |
+| address | string |         | address of the owner of the key |
+
+#### returns
+
+| Name    | Type       | Description              |
+| ------- | ---------- | ------------------------ |
+| message | string     | return consensus message |
+| error   | ErrorValue | Errors                   |
+
+```javascript
+import { getAuthMessage, AuthMessage } from "@lighthouse-web3/kavach";
+import { ethers } from "ethers";
+
+async function main() {
+  let signer = new ethers.Wallet(
+    "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
+  );
+
+  // get consensus message
+  const authMessage: AuthMessage = await getAuthMessage(signer.address);
+  const signedMessage = await signer.signMessage(authMessage.message);
+
+  console.log(typeof authMessage.message == "string"); //true;
+  console.log(authMessage.error == null); //true;
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+- ### _getJWT(address:string,signedMessage: SignedMessage)_
+
+Get Consensus Message to Sign
+
+#### Parameters
+
+| Name          | Type   | Default | Description                     |
+| ------------- | ------ | ------- | ------------------------------- |
+| address       | string |         | address of the owner of the key |
+| signedMessage | string |         | signed consesus message         |
+
+#### returns
+
+| Name  | Type       | Description |
+| ----- | ---------- | ----------- |
+| JWT   | string     | return JWT  |
+| error | ErrorValue | Errors      |
+
+```javascript
+import { getAuthMessage, AuthMessage, getJWT } from "@lighthouse-web3/kavach";
+import { ethers } from "ethers";
+
+async function main() {
+  let signer = new ethers.Wallet(
+    "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
+  );
+
+  // get consensus message
+  const authMessage: AuthMessage = await getAuthMessage(signer.address);
+  const signedMessage = await signer.signMessage(authMessage.message);
+
+  const { JWT, error } = await getJWT(signer.address, signedMessage);
+  console.log(typeof JWT == "string"); //true;
+  console.log(error == null); //true;
 }
 
 main()
