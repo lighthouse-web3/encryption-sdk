@@ -627,7 +627,7 @@ Get Consensus Message to Sign
 | Name          | Type   | Default | Description                     |
 | ------------- | ------ | ------- | ------------------------------- |
 | address       | string |         | address of the owner of the key |
-| signedMessage | string |         | signed consesus message         |
+| signedMessage | string |         | signed consensus message         |
 
 #### returns
 
