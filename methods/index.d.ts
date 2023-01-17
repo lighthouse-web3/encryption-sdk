@@ -41,6 +41,9 @@ type RecoverShards = {
 
 type WithPrefix<T extends string> = `${T}${string}`;
 
+export type SignedMessage=string;
+export type JWT=WithPrefix<'jwt:'>;
+
 export function recoverShards(
   address: string,
   cid: string,
@@ -52,9 +55,6 @@ export type LightHouseSDKResponse = {
   isSuccess: boolean;
   error: ErrorValue;
 };
-export type SignedMessage=string
-export type JWT=WithPrefix<'jwt:'>;
-
 
 export function saveShards(
   address: string,
