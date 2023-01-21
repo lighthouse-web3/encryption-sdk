@@ -68,27 +68,7 @@ const solidityType = [
 ];
 
 const SupportedChains = {
-  EVM: [
-    "Ethereum",
-    "Rinkeby",
-    "Polygon",
-    "Fantom",
-    "FantomTest",
-    "AVAX",
-    "Fuji",
-    "BSC",
-    "BSCTest",
-    "Optimism",
-    "OptimismGoerli",
-    "OptimismKovan",
-    "Mumbai",
-    "FVM",
-    "Wallaby",
-    "Calibration",
-    "Shardeum",
-    "Shardeum_Lib1",
-    "Shardeum_Lib2",
-  ],
+  EVM: [],
   SOLANA: ["DEVNET", "TESTNET", "MAINNET"],
 };
 
@@ -107,10 +87,7 @@ const evmConditions = Joi.array()
         then: Joi.string(),
         otherwise: Joi.string().required(),
       }),
-      chain: Joi.string()
-        .valid(...SupportedChains["EVM"])
-        .insensitive()
-        .required(),
+      chain: Joi.string().insensitive().required(),
       method: Joi.when("standardContractType", {
         is: Joi.equal(""),
         then: Joi.string().valid("getBalance", "getBlockNumber").required(),

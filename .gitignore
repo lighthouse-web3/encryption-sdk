@@ -3,3 +3,5 @@ coverage
 *.tgz
 temp
 yarn-error.log
+.vscode/
+*.txt

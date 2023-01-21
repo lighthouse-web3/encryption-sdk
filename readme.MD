@@ -1,6 +1,6 @@
 # Kavach <img src="https://img.shields.io/badge/BETA-v0.1-green"/>
 
-Kavach is encryption sdk that allows you to build your trustless, decentralized and fault tolerant Applications using distributed key shards with threshold cryptography
+Kavach is an encryption SDK that allows you to build your trustless, decentralized and fault-tolerant Applications using distributed key shards with threshold cryptography
 
 ## Features
 
@@ -12,7 +12,7 @@ Kavach is encryption sdk that allows you to build your trustless, decentralized 
 
 ## Install
 
-Just use your favorite package manager to add `lighthouse-encryption-sdk` to your project:
+Just use your favorite package manager to add `lighthouse-kavach to your project:
 
 ```sh
 yarn add @lighthouse-web3/kavach
@@ -202,7 +202,7 @@ main()
 
 - ### _shareToAddress(address: string, cid: string, authSignedMessage: string, shareTo: Array<string> )_
 
-share file Key to address
+Share file Key to address
 
 #### Parameters
 
@@ -422,8 +422,8 @@ main()
 
 - ### _accessCondition( address: string, cid: string, authSignedMessage: string, conditions: Condition[], aggregator?: string,chainType?: ChainType)_
 
-Add more granular access Condition based on on-Chain Data, this supports custom EVM contracts, block timestamp and so on.
-with support for over 15 Ethereum Virtual Machine (EVM) based networks and based solana RPC calls
+Add more granular access Conditions based on on-Chain Data, this supports custom EVM contracts, block timestamps and so on.
+with support for over 15 Ethereum Virtual Machine (EVM) based networks and based Solana RPC calls
 
 - Ethereum
 - Rinkeby
@@ -458,7 +458,7 @@ Solana
 | authSignedMessage | string             | Signed Message gotten from getAuthMessage /JWT                                  |
 | conditions        | Array< Condition > | This Array contains a list of conditions to be tested on chain                  |
 | aggregator        | string             | This is a template string that structures how the conditions should be computed |
-| chainType         | string             | This defaults to EVM and can be set to Solana for solana conditions             |
+| chainType         | string             | This defaults to EVM and can be set to Solana for Solana conditions             |
 
 #### returns
 
@@ -544,9 +544,9 @@ async function main() {
     console.log(isSuccess == true);
   }
 
-  //recover shared from address that matches the above condition
+  // recover shared from an address that matches the above condition
   // that is
-  // has a balance equal to or greater then Zero on the Optimism mainnet and has a token balance greater then equal to zero of the token 0xF0Bc72fA04aea04d04b1fA80B359Adb566E1c8B1 on fantom's testnet
+  // has a balance equal to or greater than Zero on the Optimism mainnet and has a token balance greater than equal to zero of the token 0xF0Bc72fA04aea04d04b1fA80B359Adb566E1c8B1 on fantom's testnet
   // or if block height is greater than zero
 
   {
@@ -627,7 +627,7 @@ Get Consensus Message to Sign
 | Name          | Type   | Default | Description                     |
 | ------------- | ------ | ------- | ------------------------------- |
 | address       | string |         | address of the owner of the key |
-| signedMessage | string |         | signed consesus message         |
+| signedMessage | string |         | signed consensus message         |
 
 #### returns
 
