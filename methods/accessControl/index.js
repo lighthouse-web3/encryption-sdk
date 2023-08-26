@@ -13,7 +13,8 @@ module.exports.accessControl = async (
   signedMessage,
   conditions,
   aggregator = null,
-  chainType = "evm"
+  decryptionType="",
+  chainType = "evm",
 ) => {
   try {
     if (!isCidReg(cid)) {
@@ -24,6 +25,7 @@ module.exports.accessControl = async (
       cid,
       conditions,
       aggregator,
+      decryptionType,
       chainType,
     });
 
@@ -47,6 +49,7 @@ module.exports.accessControl = async (
               cid,
               conditions,
               aggregator,
+              decryptionType,
               chainType,
             },
             {

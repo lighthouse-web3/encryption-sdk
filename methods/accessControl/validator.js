@@ -185,6 +185,12 @@ const updateConditionSchema = Joi.object({
     then: evmConditions,
     otherwise: solanaConditions,
   }),
+  decryptionType: Joi.string()
+    .allow("", null)
+    .empty(["", null])
+    .default("SOCIAL")
+    .valid("SOCIAL", "ACCESS_CONDITIONS")
+    .insensitive(),
   address: Joi.string().required(),
   cid: Joi.string().required(),
   // TO aggregator next iteration: "1 or 2 and (3 xor 4)"
