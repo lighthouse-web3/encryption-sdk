@@ -13,7 +13,7 @@ module.exports.accessControl = async (
   signedMessage,
   conditions,
   aggregator = null,
-  decryptionType="",
+  decryptionType="ADDRESS",
   chainType = "evm",
 ) => {
   try {

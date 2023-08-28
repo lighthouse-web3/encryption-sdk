@@ -188,8 +188,8 @@ const updateConditionSchema = Joi.object({
   decryptionType: Joi.string()
     .allow("", null)
     .empty(["", null])
-    .default("SOCIAL")
-    .valid("SOCIAL", "ACCESS_CONDITIONS")
+    .default("ADDRESS")
+    .valid("ADDRESS", "ACCESS_CONDITIONS")
     .insensitive(),
   address: Joi.string().required(),
   cid: Joi.string().required(),
