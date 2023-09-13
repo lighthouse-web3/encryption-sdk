@@ -26,11 +26,20 @@ describe("getJWT", () => {
     const authMessage = await getAuthMessage(signer.address);
     const signedMessage = await signer.signMessage(authMessage.message);
 
-    const { JWT, error } = await _package.getJWT(
+    const { JWT, error, refreshToken } = await _package.getJWT(
       signer.address,
       signedMessage,
     );
     expect(error).toBe(null);
     expect(JWT).toMatch(/jwt:/i);
+    expect(refreshToken).toMatch(/r:/i);
+
+    let secound_res = await _package.getJWT(
+      signer.address,
+      refreshToken,
+      useAsRefreshToken = true
+    );
+    expect(secound_res.JWT).toMatch(/jwt:/i);
+    expect(secound_res.refreshToken).toMatch(/r:/i);
   }, 20000);
 })
