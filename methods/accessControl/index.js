@@ -42,7 +42,7 @@ module.exports.accessControl = async (
     const data = await Promise.all(
       nodeUrl.map((url) => {
         return axios
-          .put(
+          .post(
             url,
             {
               address,
