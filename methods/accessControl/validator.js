@@ -202,6 +202,43 @@ const updateConditionSchema = Joi.object({
   }),
 });
 
+const accessConditionSchema = Joi.object({
+  chainType: Joi.string()
+    .allow("", null)
+    .empty(["", null])
+    .default("EVM")
+    .valid("EVM", "SOLANA")
+    .insensitive(),
+  decryptionType: Joi.string()
+    .allow("", null)
+    .empty(["", null])
+    .default("ADDRESS")
+    .valid("ADDRESS", "ACCESS_CONDITIONS")
+    .insensitive(),
+  conditions: Joi.when("chainType", {
+    is: Joi.equal("EVM"),
+    then: evmConditions,
+    otherwise: solanaConditions,
+  }),
+  address: Joi.string()
+    .required(),
+  keyShards: Joi.array()
+    .min(5)
+    .max(5)
+    .required()
+    .items(
+      Joi.object()),
+  cid: Joi.string()
+    .required(),
+  // TO aggregator next iteration: "1 or 2 and (3 xor 4)"
+  aggregator: Joi.when("conditions.length", {
+    is: Joi.number().greater(1),
+    then: Joi.string()
+      .pattern(/( and | or )/i)
+      .required(),
+  }),
+})
 module.exports = {
   updateConditionSchema,
+  accessConditionSchema
 };

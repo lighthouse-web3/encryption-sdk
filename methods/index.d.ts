@@ -77,6 +77,7 @@ export function revokeAccess(
 ): Promise<LightHouseSDKResponse>;
 
 export type ChainType = "EVM" | "evm" | "solana" | "SOLANA";
+export type DecryptionType = "ADDRESS"| "ACCESS_CONDITIONS";
 
 export function accessControl(
   address: string,
@@ -84,7 +85,9 @@ export function accessControl(
   authSignedMessage: SignedMessage|JWT,
   conditions: { [key: string]: any },
   aggregator?: string,
-  chainType?: ChainType
+  chainType?: ChainType,
+  keyShards?: keyShard[],
+  decryptionType?: DecryptionType
 ): Promise<LightHouseSDKResponse>;
 
 export function shareToAddress(

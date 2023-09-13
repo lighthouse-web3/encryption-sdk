@@ -1,6 +1,7 @@
-const _package = require("..");
+const _package = require("../../../index");
 const { ethers } = require("ethers");
 const { getAuthMessage } = require("../../getAuthMessage");
+const hash = require("ipfs-only-hash")
 
 describe("AccessControl", () => {
   let signer;
@@ -103,6 +104,43 @@ describe("AccessControl", () => {
         },
       ],
       "([2] and [1])"
+    );
+    expect(error).toBe(null);
+    expect(isSuccess).toBe(true);
+  }, 20000);
+
+  test("Add new cid access Conditions", async () => {
+    const authMessage = await getAuthMessage(signer.address);
+    const signedMessage = await signer.signMessage(authMessage.message);
+    const { masterKey, keyShards } = await _package.generate(3, 5)
+    const { error, isSuccess } = await _package.accessControl(
+      signer.address,
+      await hash.of("QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AkkwQH"),
+      signedMessage,
+      [
+        {
+          id: 1,
+          chain: "FantomTest",
+          method: "balanceOf",
+          standardContractType: "ERC20",
+          contractAddress: "0xF0Bc72fA04aea04d04b1fA80B359Adb566E1c8B1",
+          returnValueTest: { comparator: ">=", value: "0" },
+          parameters: [":userAddress"],
+        },
+        {
+          id: 2,
+          chain: "FantomTest",
+          method: "balanceOf",
+          standardContractType: "ERC20",
+          contractAddress: "0xF0Bc72fA04aea04d04b1fA80B359Adb566E1c8B1",
+          returnValueTest: { comparator: ">=", value: "0" },
+          parameters: [":userAddress"],
+        },
+      ],
+      "([2] and [1])",
+      "EVM",
+      keyShards,
+      "ADDRESS",
     );
     expect(error).toBe(null);
     expect(isSuccess).toBe(true);

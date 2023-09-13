@@ -4,7 +4,7 @@ const {
   isDev,
   lighthouseBLSNodeDev,
 } = require("../../config");
-const { updateConditionSchema } = require("./validator");
+const { updateConditionSchema, accessConditionSchema } = require("./validator");
 const { isEqual, isCidReg } = require("../../util/index");
 
 module.exports.accessControl = async (
@@ -13,19 +13,30 @@ module.exports.accessControl = async (
   auth_payload,
   conditions,
   aggregator = null,
-  decryptionType="ADDRESS",
   chainType = "evm",
+  keyShards = [],
+  decryptionType = "ADDRESS",
 ) => {
   try {
+    if (!Array.isArray(keyShards) || (keyShards.length != 5 && keyShards.length != 0)) {
+      throw new Error("keyShards must be an array of 5 objects");
+    }
     if (!isCidReg(cid)) {
       throw new Error("Invalid CID");
     }
-    const { error } = updateConditionSchema.validate({
+    const { error } = keyShards.length == 5 ? accessConditionSchema.validate({
       address,
       cid,
       conditions,
       aggregator,
       decryptionType,
+      chainType,
+      keyShards
+    }) : updateConditionSchema.validate({
+      address,
+      cid,
+      conditions,
+      aggregator,
       chainType,
     });
 
@@ -39,8 +50,8 @@ module.exports.accessControl = async (
         : `${lighthouseBLSNode}/api/fileAccessConditions/${elem}`
     );
     // send encryption key
-    const data = await Promise.all(
-      nodeUrl.map((url) => {
+    const data = keyShards.length == 5 ? await Promise.all(
+      nodeUrl.map((url, index) => {
         return axios
           .post(
             url,
@@ -51,6 +62,7 @@ module.exports.accessControl = async (
               aggregator,
               decryptionType,
               chainType,
+              payload: keyShards[index],
             },
             {
               headers: {
@@ -60,9 +72,30 @@ module.exports.accessControl = async (
           )
           .then((res) => res.data);
       })
-    );
+    ) :
+      await Promise.all(
+        nodeUrl.map((url) => {
+          return axios
+            .put(
+              url,
+              {
+                address,
+                cid,
+                conditions,
+                aggregator,
+                chainType,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + auth_payload,
+                },
+              }
+            )
+            .then((res) => res.data);
+        })
+      );
     return {
-      isSuccess: isEqual(...data) && data[0]?.message === "success",
+      isSuccess: isEqual(...data.map(e => e.message)) && data[0]?.message === "success",
       error: null,
     };
   } catch (err) {

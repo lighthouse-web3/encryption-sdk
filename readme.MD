@@ -420,7 +420,7 @@ main()
   });
 ```
 
-- ### _accessCondition( address: string, cid: string, auth_payload: string, conditions: Condition[], aggregator?: string,chainType?: ChainType)_
+- ### _accessCondition( address: string, cid: string, auth_payload: string, conditions: Condition[], aggregator?: string,chainType?: ChainType, keyShards? :  Array<{key:string; index:string}>,  decryptionType? : string )_
 
 Add more granular access Conditions based on on-Chain Data, this supports custom EVM contracts, block timestamps and so on.
 with support for over 15 Ethereum Virtual Machine (EVM) based networks and based Solana RPC calls
@@ -459,14 +459,17 @@ Solana
 
 #### Parameters
 
-| Name              | Type               | Description                                                                     |
-| ----------------- | ------------------ | ------------------------------------------------------------------------------- |
-| address           | string             | Address of the owner of the key                                                 |
-| cid               | string             | Unique id or file CID                                                           |
-| auth_payload      | string             | Signed Message gotten from getAuthMessage /JWT                                  |
-| conditions        | Array< Condition > | This Array contains a list of conditions to be tested on chain                  |
-| aggregator        | string             | This is a template string that structures how the conditions should be computed |
-| chainType         | string             | This defaults to EVM and can be set to Solana for Solana conditions             |
+| Name              | Type                                | Description                                                                     |
+| ----------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
+| address           | string                              | Address of the owner of the key                                                 |
+| cid               | string                              | Unique id or file CID                                                           |
+| auth_payload      | string                              | Signed Message gotten from getAuthMessage /JWT                                  |
+| conditions        | Array< Condition >                  | This Array contains a list of conditions to be tested on chain                  |
+| aggregator        | string                              | This is a template string that structures how the conditions should be computed |
+| chainType         | string                              | This defaults to EVM and can be set to Solana for Solana conditions             |
+| keyShards?        | Array<{key:string; index:string}>   | This Field is optional, you can use it to set, overWrite or rotate key shards   |
+| decryptionType?   | string                              | This value can be set to ACCESS_CONDITIONS to first time shard is added, **WARNING: This sets Owner to address zero(0x0000000000000000000000000000)**  |
+
 
 #### returns
 
