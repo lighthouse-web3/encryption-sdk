@@ -10,7 +10,7 @@ const { isEqual, isCidReg } = require("../../util/index");
 module.exports.accessControl = async (
   address,
   cid,
-  signedMessage,
+  auth_payload,
   conditions,
   aggregator = null,
   decryptionType="ADDRESS",
@@ -54,7 +54,7 @@ module.exports.accessControl = async (
             },
             {
               headers: {
-                Authorization: "Bearer " + signedMessage,
+                Authorization: "Bearer " + auth_payload,
               },
             }
           )

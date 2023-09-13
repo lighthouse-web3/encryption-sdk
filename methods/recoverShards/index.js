@@ -22,7 +22,7 @@ const randSelect = (k, n) => {
 module.exports.recoverShards = async (
   address,
   cid,
-  signature,
+  auth_payload,
   numOfShards = 3
 ) => {
   try {
@@ -44,7 +44,7 @@ module.exports.recoverShards = async (
             },
             {
               headers: {
-                Authorization: "Bearer " + signature,
+                Authorization: "Bearer " + auth_payload,
               },
             }
           )
