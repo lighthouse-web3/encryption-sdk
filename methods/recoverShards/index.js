@@ -23,7 +23,8 @@ module.exports.recoverShards = async (
   address,
   cid,
   auth_payload,
-  numOfShards = 3
+  numOfShards = 3,
+  dynamicData = {}
 ) => {
   try {
     const nodeIndexSelected = randSelect(numOfShards, 5);
@@ -41,6 +42,7 @@ module.exports.recoverShards = async (
             {
               address,
               cid,
+              dynamicData
             },
             {
               headers: {

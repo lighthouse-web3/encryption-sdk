@@ -156,7 +156,7 @@ Backup key to lighthouse's Node
 | cid               | string                            |         | unique id or file CID                         |
 | auth_payload      | string                            |         | signed Message gotten from getAuthMessage/JWT |
 | keyShards         | Array<{key:string; index:string}> |         | An array of 5 key shards/ element             |
-| shareTo           | Array< address >(Options)         | []      | An array of address                           |
+| shareTo           | Array< address >(Optional)        | []      | An array of address                           |
 
 #### returns
 
@@ -200,6 +200,78 @@ main()
   });
 ```
 
+- ### _recoverShards( address: string, cid: string, auth_payload: string, dynamicData:{},)_
+
+recover key shards to lighthouse's Node
+
+#### Parameters
+
+| Name              | Type                                                         | Default | Description                                   |
+| ----------------- | ------------------------------------------------------------ | ------- | --------------------------------------------- |
+| address           | string                                                       |         | address of the owner of the key               |
+| cid               | string                                                       |         | unique id or file CID                         |
+| auth_payload      | string                                                       |         | signed Message gotten from getAuthMessage/JWT |
+| keyCount          | number(optional)                                             | 3       | number of nodes to ping for shards (**Note**: _must be less than or equal to 5_) |
+| dynamicData       | object<{[`conditionID`.`parameterName`]: value} >(Optional)  | {}      | This is used to pass additional or dynamic data like a signature during key recovery with AccessControl  |
+
+#### returns
+
+| Name             | Type                                | Description                       |
+| ---------------- | ----------------------------------  | ----------------------------------|
+| keyShards        | Array<{key:string; index:string}>   | key shards  recovered fromm nodes |
+| error            | ErrorValue                          | Errors                            |
+
+#### Demo
+
+```javascript
+import { getAuthMessage, saveShards, generate } from "@lighthouse-web3/kavach";
+import { ethers } from "ethers";
+
+async function main() {
+  const signer = new ethers.Wallet(
+    "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
+  );
+
+  const { masterKey, keyShards } = await generate();
+
+  let authMessage = await getAuthMessage(signer.address);
+  let signedMessage = await signer.signMessage(authMessage.message);
+
+  const { error, isSuccess } = await saveShards(
+    signer.address,
+    "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    signedMessage,
+    keyShards
+  );
+
+  console.log(error === null); // true;
+  console.log(isSuccess === true); //true;
+
+
+  authMessage = await getAuthMessage(signer.address);
+  signedMessage = await signer.signMessage(authMessage.message);
+  //retrieve 3 keys
+  const { error, shards } = await recoverShards(
+    signer.address,
+    cid,
+    signedMessage,
+    3
+  );
+  console.log(error == null); //true;
+  console.log(shards.length === 3); // true;
+
+  const { masterKey: recoveredKey } = await recoverKey(keyShards);
+  console.log(masterKey === recoveredKey); //true
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
 - ### _shareToAddress(address: string, cid: string, auth_payload: string, shareTo: Array<string> )_
 
 Share file Key to address
@@ -211,7 +283,7 @@ Share file Key to address
 | address           | string                    |         | address of the owner of the key                 |
 | cid               | string                    |         | unique id or file CID                           |
 | auth_payload      | string                    |         | signed Message gotten from getAuthMessage/ JWT  |
-| shareTo           | Array< address >(Options) | []      | An array of address to share file key shards to |
+| shareTo           | Array< address >(Optional)| []      | An array of address to share file key shards to |
 
 #### returns
 
@@ -310,7 +382,7 @@ revoke access to addresses with direct access
 | address           | string                    |         | address of the owner of the key                 |
 | cid               | string                    |         | unique id or file CID                           |
 | auth_payload      | string                    |         | signed Message gotten from getAuthMessage /JWT  |
-| revokeTo          | Array< address >(Options) | []      | An array of address to remove for Direct access |
+| revokeTo          | Array< address >(Optional)| []      | An array of address to remove for Direct access |
 
 #### returns
 
@@ -570,7 +642,8 @@ async function main() {
       signer2.address,
       cid,
       signedMessage,
-      3
+      3,
+      dynamicData
     );
     console.log(error == null); //true;
     console.log(shards.length === 3); // true;
