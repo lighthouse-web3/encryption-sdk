@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "ethers": "^5.7.2",
-    "ipfs-only-hash": "^4.0.0",
     "jest": "^29.3.1"
   },
   "repository": {
