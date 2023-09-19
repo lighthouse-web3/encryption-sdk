@@ -1,7 +1,6 @@
 const _package = require("../../../index");
 const { ethers } = require("ethers");
 const { getAuthMessage } = require("../../getAuthMessage");
-const hash = require("ipfs-only-hash")
 
 describe("AccessControl", () => {
   let signer;
@@ -115,7 +114,7 @@ describe("AccessControl", () => {
     const { masterKey, keyShards } = await _package.generate(3, 5)
     const { error, isSuccess } = await _package.accessControl(
       signer.address,
-      await hash.of("QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AkkwQH"),
+      "QmPzhJDbMgoxXH7JoRc1roXqkLGtngLiGVhegiDEmmTnbM",
       signedMessage,
       [
         {
