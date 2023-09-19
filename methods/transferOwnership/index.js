@@ -1,37 +1,18 @@
 const axios = require("axios");
-const {
-  lighthouseBLSNode,
-  isDev,
-  lighthouseBLSNodeDev,
-} = require("../../config");
 
-function randRange(min, max) {
-  return min + Math.floor(Math.random() * (max - min));
-}
-const randSelect = (k, n) => {
-  const a = [];
-  let prev = -1;
-  for (let i = 0; i < k; i++) {
-    let v = randRange(prev + 1, n - (k - i) + 1);
-    a.push(v + 1);
-    prev = v;
-  }
-  return a;
-};
-
-module.exports.recoverShards = async (
+module.exports.transferOwnership = async (
   address,
   cid,
+  newOwner,
   auth_token,
-  numOfShards = 3,
-  dynamicData = {}
+  resetSharedTo = true
 ) => {
   try {
-    const nodeIndexSelected = randSelect(numOfShards, 5);
+    const nodeIndexSelected = [1, 2, 3, 4, 5];
     const nodeUrl = nodeIndexSelected.map((elem) =>
       isDev
-        ? `${lighthouseBLSNodeDev}:900${elem}/api/retrieveSharedKey/${elem}`
-        : `${lighthouseBLSNode}/api/retrieveSharedKey/${elem}`
+        ? `${lighthouseBLSNodeDev}:900${elem}/api/transferOwnership/${elem}`
+        : `${lighthouseBLSNode}/api/transferOwnership/${elem}`
     );
     // send encryption key
     const recoveredShards = await Promise.all(
@@ -42,7 +23,8 @@ module.exports.recoverShards = async (
             {
               address,
               cid,
-              dynamicData
+              newOwner,
+              resetSharedTo
             },
             {
               headers: {
