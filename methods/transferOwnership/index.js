@@ -4,7 +4,7 @@ module.exports.transferOwnership = async (
   address,
   cid,
   newOwner,
-  auth_payload,
+  auth_token,
   resetSharedTo = true
 ) => {
   try {
@@ -28,7 +28,7 @@ module.exports.transferOwnership = async (
             },
             {
               headers: {
-                Authorization: "Bearer " + auth_payload,
+                Authorization: "Bearer " + auth_token,
               },
             }
           )

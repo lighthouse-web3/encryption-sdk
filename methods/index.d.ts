@@ -47,7 +47,7 @@ export type JWT = WithPrefix<'jwt:'>;
 export function recoverShards(
   address: string,
   cid: string,
-  authSignedMessage: SignedMessage | JWT,
+  auth_token: SignedMessage | JWT,
   numOfShards?: number,
   dynamicData?: object
 ): Promise<RecoverShards>;
@@ -60,7 +60,7 @@ export type LightHouseSDKResponse = {
 export function saveShards(
   address: string,
   cid: string,
-  authSignedMessage: SignedMessage | JWT,
+  auth_token: SignedMessage | JWT,
   keyShards: keyShard[] | Array<any>,
   shareTo?: string[]
 ): Promise<LightHouseSDKResponse>;
@@ -73,7 +73,7 @@ export function shardKey(key: string): Promise<{
 export function revokeAccess(
   address: string,
   cid: string,
-  authSignedMessage: SignedMessage | JWT,
+  auth_token: SignedMessage | JWT,
   revokeTo: Array<string>
 ): Promise<LightHouseSDKResponse>;
 
@@ -83,7 +83,7 @@ export type DecryptionType = "ADDRESS" | "ACCESS_CONDITIONS";
 export function accessControl(
   address: string,
   cid: string,
-  authSignedMessage: SignedMessage | JWT,
+  auth_token: SignedMessage | JWT,
   conditions: { [key: string]: any },
   aggregator?: string,
   chainType?: ChainType,
@@ -94,7 +94,7 @@ export function accessControl(
 export function shareToAddress(
   address: string,
   cid: string,
-  authSignedMessage: SignedMessage | JWT,
+  auth_token: SignedMessage | JWT,
   shareTo: Array<string>
 ): Promise<LightHouseSDKResponse>;
 

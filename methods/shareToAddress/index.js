@@ -9,7 +9,7 @@ const { isEqual, isCidReg } = require("../../util/index");
 module.exports.shareToAddress = async (
   address,
   cid,
-  auth_payload,
+  auth_token,
   shareTo
 ) => {
   try {
@@ -35,7 +35,7 @@ module.exports.shareToAddress = async (
             },
             {
               headers: {
-                Authorization: "Bearer " + auth_payload,
+                Authorization: "Bearer " + auth_token,
               },
             }
           )

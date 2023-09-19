@@ -144,7 +144,7 @@ main()
   });
 ```
 
-- ### _saveShards( address: string, cid: string, auth_payload: string, keyShards: keyShard[5] | any[5], shareTo : string[])_
+- ### _saveShards( address: string, cid: string, auth_token: string, keyShards: keyShard[5] | any[5], shareTo : string[])_
 
 Backup key to lighthouse's Node
 
@@ -154,7 +154,7 @@ Backup key to lighthouse's Node
 | ----------------- | --------------------------------- | ------- | --------------------------------------------- |
 | address           | string                            |         | address of the owner of the key               |
 | cid               | string                            |         | unique id or file CID                         |
-| auth_payload      | string                            |         | signed Message gotten from getAuthMessage/JWT |
+| auth_token      | string                            |         | signed Message gotten from getAuthMessage/JWT |
 | keyShards         | Array<{key:string; index:string}> |         | An array of 5 key shards/ element             |
 | shareTo           | Array< address >(Optional)        | []      | An array of address                           |
 
@@ -200,7 +200,7 @@ main()
   });
 ```
 
-- ### _recoverShards( address: string, cid: string, auth_payload: string, dynamicData:{},)_
+- ### _recoverShards( address: string, cid: string, auth_token: string, dynamicData:{},)_
 
 recover key shards to lighthouse's Node
 
@@ -210,7 +210,7 @@ recover key shards to lighthouse's Node
 | ----------------- | ------------------------------------------------------------ | ------- | --------------------------------------------- |
 | address           | string                                                       |         | address of the owner of the key               |
 | cid               | string                                                       |         | unique id or file CID                         |
-| auth_payload      | string                                                       |         | signed Message gotten from getAuthMessage/JWT |
+| auth_token      | string                                                       |         | signed Message gotten from getAuthMessage/JWT |
 | keyCount          | number(optional)                                             | 3       | number of nodes to ping for shards (**Note**: _must be less than or equal to 5_) |
 | dynamicData       | object<{[`conditionID`.`parameterName`]: value} >(Optional)  | {}      | This is used to pass additional or dynamic data like a signature during key recovery with AccessControl  |
 
@@ -272,7 +272,7 @@ main()
   });
 ```
 
-- ### _shareToAddress(address: string, cid: string, auth_payload: string, shareTo: Array<string> )_
+- ### _shareToAddress(address: string, cid: string, auth_token: string, shareTo: Array<string> )_
 
 Share file Key to address
 
@@ -282,7 +282,7 @@ Share file Key to address
 | ----------------- | ------------------------- | ------- | ----------------------------------------------- |
 | address           | string                    |         | address of the owner of the key                 |
 | cid               | string                    |         | unique id or file CID                           |
-| auth_payload      | string                    |         | signed Message gotten from getAuthMessage/ JWT  |
+| auth_token      | string                    |         | signed Message gotten from getAuthMessage/ JWT  |
 | shareTo           | Array< address >(Optional)| []      | An array of address to share file key shards to |
 
 #### returns
@@ -371,7 +371,7 @@ main()
   });
 ```
 
-- ### _revokeAccess(address: string, cid: string, auth_payload: string, revokeTo: Array<string> )_
+- ### _revokeAccess(address: string, cid: string, auth_token: string, revokeTo: Array<string> )_
 
 revoke access to addresses with direct access
 
@@ -381,7 +381,7 @@ revoke access to addresses with direct access
 | ----------------- | ------------------------- | ------- | ----------------------------------------------- |
 | address           | string                    |         | address of the owner of the key                 |
 | cid               | string                    |         | unique id or file CID                           |
-| auth_payload      | string                    |         | signed Message gotten from getAuthMessage /JWT  |
+| auth_token      | string                    |         | signed Message gotten from getAuthMessage /JWT  |
 | revokeTo          | Array< address >(Optional)| []      | An array of address to remove for Direct access |
 
 #### returns
@@ -492,7 +492,7 @@ main()
   });
 ```
 
-- ### _accessCondition( address: string, cid: string, auth_payload: string, conditions: Condition[], aggregator?: string,chainType?: ChainType, keyShards? :  Array<{key:string; index:string}>,  decryptionType? : string )_
+- ### _accessCondition( address: string, cid: string, auth_token: string, conditions: Condition[], aggregator?: string,chainType?: ChainType, keyShards? :  Array<{key:string; index:string}>,  decryptionType? : string )_
 
 Add more granular access Conditions based on on-Chain Data, this supports custom EVM contracts, block timestamps and so on.
 with support for over 15 Ethereum Virtual Machine (EVM) based networks and based Solana RPC calls
@@ -535,7 +535,7 @@ Solana
 | ----------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
 | address           | string                              | Address of the owner of the key                                                 |
 | cid               | string                              | Unique id or file CID                                                           |
-| auth_payload      | string                              | Signed Message gotten from getAuthMessage /JWT                                  |
+| auth_token      | string                              | Signed Message gotten from getAuthMessage /JWT                                  |
 | conditions        | Array< Condition >                  | This Array contains a list of conditions to be tested on chain                  |
 | aggregator        | string                              | This is a template string that structures how the conditions should be computed |
 | chainType         | string                              | This defaults to EVM and can be set to Solana for Solana conditions             |
@@ -750,7 +750,7 @@ main()
 ```
 
 
-- ### _transferOwnership(address: string, cid: string, newOwner: string, auth_payload: string, resetSharedTo: boolean = true)_
+- ### _transferOwnership(address: string, cid: string, newOwner: string, auth_token: string, resetSharedTo: boolean = true)_
 
 Transfer Ownership of a Resource
 
@@ -761,7 +761,7 @@ Transfer Ownership of a Resource
 | address          | string  |         | Address of the current owner of the resource    |
 | cid              | string  |         | Content ID (CID) of the resource                |
 | newOwner         | string  |         | Address of the new owner for the resource       |
-| auth_payload     | string  |         | Authentication payload or token                 |
+| auth_token     | string  |         | Authentication payload or token                 |
 | resetSharedTo    | boolean | true    | Reset shared permissions when ownership changes |
 
 #### Returns

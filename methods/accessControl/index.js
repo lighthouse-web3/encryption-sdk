@@ -10,7 +10,7 @@ const { isEqual, isCidReg } = require("../../util/index");
 module.exports.accessControl = async (
   address,
   cid,
-  auth_payload,
+  auth_token,
   conditions,
   aggregator = null,
   chainType = "evm",
@@ -66,7 +66,7 @@ module.exports.accessControl = async (
             },
             {
               headers: {
-                Authorization: "Bearer " + auth_payload,
+                Authorization: "Bearer " + auth_token,
               },
             }
           )
@@ -87,7 +87,7 @@ module.exports.accessControl = async (
               },
               {
                 headers: {
-                  Authorization: "Bearer " + auth_payload,
+                  Authorization: "Bearer " + auth_token,
                 },
               }
             )

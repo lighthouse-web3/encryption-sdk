@@ -4,7 +4,7 @@
 const defaultConfig = {
   lighthouseBLSNode: "https://encryption.lighthouse.storage",
   lighthouseAuthNode: "https://encryption.lighthouse.storage",
-  lighthouseBLSNodeDev: "http://34.131.92.93",
+  lighthouseBLSNodeDev: "http://enctest.lighthouse.storage",
   isDev: false,
 };
 

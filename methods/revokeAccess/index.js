@@ -7,7 +7,7 @@ const {
 
 const { isEqual, isCidReg } = require("../../util/index");
 
-module.exports.revokeAccess = async (address, cid, auth_payload, revokeTo) => {
+module.exports.revokeAccess = async (address, cid, auth_token, revokeTo) => {
   try {
     if (!isCidReg(cid)) {
       throw new Error("Invalid CID");
@@ -29,7 +29,7 @@ module.exports.revokeAccess = async (address, cid, auth_payload, revokeTo) => {
               revokeTo,
             },
             headers: {
-              Authorization: "Bearer " + auth_payload,
+              Authorization: "Bearer " + auth_token,
             },
           })
           .then((res) => res.data);
