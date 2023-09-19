@@ -9,7 +9,7 @@ const { isEqual, isCidReg } = require("../../util/index");
 module.exports.saveShards = async (
   address,
   cid,
-  signature,
+  auth_token,
   keyShards,
   shareTo = []
 ) => {
@@ -34,19 +34,19 @@ module.exports.saveShards = async (
             url,
             shareTo.length > 0
               ? {
-                  address,
-                  cid,
-                  payload: keyShards[index],
-                  sharedTo: shareTo,
-                }
+                address,
+                cid,
+                payload: keyShards[index],
+                sharedTo: shareTo,
+              }
               : {
-                  address,
-                  cid,
-                  payload: keyShards[index],
-                },
+                address,
+                cid,
+                payload: keyShards[index],
+              },
             {
               headers: {
-                Authorization: "Bearer " + signature,
+                Authorization: "Bearer " + auth_token,
               },
             }
           )

@@ -144,7 +144,7 @@ main()
   });
 ```
 
-- ### _saveShards( address: string, cid: string, authSignedMessage: string, keyShards: keyShard[5] | any[5], shareTo : string[])_
+- ### _saveShards( address: string, cid: string, auth_token: string, keyShards: keyShard[5] | any[5], shareTo : string[])_
 
 Backup key to lighthouse's Node
 
@@ -154,9 +154,9 @@ Backup key to lighthouse's Node
 | ----------------- | --------------------------------- | ------- | --------------------------------------------- |
 | address           | string                            |         | address of the owner of the key               |
 | cid               | string                            |         | unique id or file CID                         |
-| authSignedMessage | string                            |         | signed Message gotten from getAuthMessage/JWT |
+| auth_token      | string                            |         | signed Message gotten from getAuthMessage/JWT |
 | keyShards         | Array<{key:string; index:string}> |         | An array of 5 key shards/ element             |
-| shareTo           | Array< address >(Options)         | []      | An array of address                           |
+| shareTo           | Array< address >(Optional)        | []      | An array of address                           |
 
 #### returns
 
@@ -200,7 +200,79 @@ main()
   });
 ```
 
-- ### _shareToAddress(address: string, cid: string, authSignedMessage: string, shareTo: Array<string> )_
+- ### _recoverShards( address: string, cid: string, auth_token: string, dynamicData:{},)_
+
+recover key shards to lighthouse's Node
+
+#### Parameters
+
+| Name              | Type                                                         | Default | Description                                   |
+| ----------------- | ------------------------------------------------------------ | ------- | --------------------------------------------- |
+| address           | string                                                       |         | address of the owner of the key               |
+| cid               | string                                                       |         | unique id or file CID                         |
+| auth_token      | string                                                       |         | signed Message gotten from getAuthMessage/JWT |
+| keyCount          | number(optional)                                             | 3       | number of nodes to ping for shards (**Note**: _must be less than or equal to 5_) |
+| dynamicData       | object<{[`conditionID`.`parameterName`]: value} >(Optional)  | {}      | This is used to pass additional or dynamic data like a signature during key recovery with AccessControl  |
+
+#### returns
+
+| Name             | Type                                | Description                       |
+| ---------------- | ----------------------------------  | ----------------------------------|
+| keyShards        | Array<{key:string; index:string}>   | key shards  recovered fromm nodes |
+| error            | ErrorValue                          | Errors                            |
+
+#### Demo
+
+```javascript
+import { getAuthMessage, saveShards, generate } from "@lighthouse-web3/kavach";
+import { ethers } from "ethers";
+
+async function main() {
+  const signer = new ethers.Wallet(
+    "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
+  );
+
+  const { masterKey, keyShards } = await generate();
+
+  let authMessage = await getAuthMessage(signer.address);
+  let signedMessage = await signer.signMessage(authMessage.message);
+
+  const { error, isSuccess } = await saveShards(
+    signer.address,
+    "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    signedMessage,
+    keyShards
+  );
+
+  console.log(error === null); // true;
+  console.log(isSuccess === true); //true;
+
+
+  authMessage = await getAuthMessage(signer.address);
+  signedMessage = await signer.signMessage(authMessage.message);
+  //retrieve 3 keys
+  const { error, shards } = await recoverShards(
+    signer.address,
+    cid,
+    signedMessage,
+    3
+  );
+  console.log(error == null); //true;
+  console.log(shards.length === 3); // true;
+
+  const { masterKey: recoveredKey } = await recoverKey(keyShards);
+  console.log(masterKey === recoveredKey); //true
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+- ### _shareToAddress(address: string, cid: string, auth_token: string, shareTo: Array<string> )_
 
 Share file Key to address
 
@@ -210,8 +282,8 @@ Share file Key to address
 | ----------------- | ------------------------- | ------- | ----------------------------------------------- |
 | address           | string                    |         | address of the owner of the key                 |
 | cid               | string                    |         | unique id or file CID                           |
-| authSignedMessage | string                    |         | signed Message gotten from getAuthMessage/ JWT  |
-| shareTo           | Array< address >(Options) | []      | An array of address to share file key shards to |
+| auth_token      | string                    |         | signed Message gotten from getAuthMessage/ JWT  |
+| shareTo           | Array< address >(Optional)| []      | An array of address to share file key shards to |
 
 #### returns
 
@@ -299,7 +371,7 @@ main()
   });
 ```
 
-- ### _revokeAccess(address: string, cid: string, authSignedMessage: string, revokeTo: Array<string> )_
+- ### _revokeAccess(address: string, cid: string, auth_token: string, revokeTo: Array<string> )_
 
 revoke access to addresses with direct access
 
@@ -309,8 +381,8 @@ revoke access to addresses with direct access
 | ----------------- | ------------------------- | ------- | ----------------------------------------------- |
 | address           | string                    |         | address of the owner of the key                 |
 | cid               | string                    |         | unique id or file CID                           |
-| authSignedMessage | string                    |         | signed Message gotten from getAuthMessage /JWT  |
-| revokeTo          | Array< address >(Options) | []      | An array of address to remove for Direct access |
+| auth_token      | string                    |         | signed Message gotten from getAuthMessage /JWT  |
+| revokeTo          | Array< address >(Optional)| []      | An array of address to remove for Direct access |
 
 #### returns
 
@@ -420,7 +492,7 @@ main()
   });
 ```
 
-- ### _accessCondition( address: string, cid: string, authSignedMessage: string, conditions: Condition[], aggregator?: string,chainType?: ChainType)_
+- ### _accessCondition( address: string, cid: string, auth_token: string, conditions: Condition[], aggregator?: string,chainType?: ChainType, keyShards? :  Array<{key:string; index:string}>,  decryptionType? : string )_
 
 Add more granular access Conditions based on on-Chain Data, this supports custom EVM contracts, block timestamps and so on.
 with support for over 15 Ethereum Virtual Machine (EVM) based networks and based Solana RPC calls
@@ -442,6 +514,14 @@ with support for over 15 Ethereum Virtual Machine (EVM) based networks and based
 - Wallaby
 - Calibration
 - Shardeum
+- Goerli
+- Hyperspace
+- BTTC
+- BTTC_Testnet
+- Sepolia_PGN
+- Arbitrum_Sepolia
+- Sepolia: 
+- BASE_Goerli
 
 Solana
 
@@ -451,14 +531,17 @@ Solana
 
 #### Parameters
 
-| Name              | Type               | Description                                                                     |
-| ----------------- | ------------------ | ------------------------------------------------------------------------------- |
-| address           | string             | Address of the owner of the key                                                 |
-| cid               | string             | Unique id or file CID                                                           |
-| authSignedMessage | string             | Signed Message gotten from getAuthMessage /JWT                                  |
-| conditions        | Array< Condition > | This Array contains a list of conditions to be tested on chain                  |
-| aggregator        | string             | This is a template string that structures how the conditions should be computed |
-| chainType         | string             | This defaults to EVM and can be set to Solana for Solana conditions             |
+| Name              | Type                                | Description                                                                     |
+| ----------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
+| address           | string                              | Address of the owner of the key                                                 |
+| cid               | string                              | Unique id or file CID                                                           |
+| auth_token      | string                              | Signed Message gotten from getAuthMessage /JWT                                  |
+| conditions        | Array< Condition >                  | This Array contains a list of conditions to be tested on chain                  |
+| aggregator        | string                              | This is a template string that structures how the conditions should be computed |
+| chainType         | string                              | This defaults to EVM and can be set to Solana for Solana conditions             |
+| keyShards?        | Array<{key:string; index:string}>   | This Field is optional, you can use it to set, overWrite or rotate key shards   |
+| decryptionType?   | string                              | This value can be set to ACCESS_CONDITIONS to first time shard is added, **WARNING: This sets Owner to address zero(0x0000000000000000000000000000)**  |
+
 
 #### returns
 
@@ -559,7 +642,8 @@ async function main() {
       signer2.address,
       cid,
       signedMessage,
-      3
+      3,
+      dynamicData
     );
     console.log(error == null); //true;
     console.log(shards.length === 3); // true;
@@ -624,17 +708,20 @@ Get Consensus Message to Sign
 
 #### Parameters
 
-| Name          | Type   | Default | Description                     |
-| ------------- | ------ | ------- | ------------------------------- |
-| address       | string |         | address of the owner of the key |
-| signedMessage | string |         | signed consensus message         |
+| Name               | Type    | Default | Description                                          |
+| ------------------ | ------- | ------- | ---------------------------------------------------- |
+| address            | string  |         | address of the owner of the key                      |
+| payload            | string  |         | signed consensus message  or refresh Token           |
+| useAsRefreshToken  | boolean |  false  | If payload is refreshToken this should be set to true |
+
 
 #### returns
 
-| Name  | Type       | Description |
-| ----- | ---------- | ----------- |
-| JWT   | string     | return JWT  |
-| error | ErrorValue | Errors      |
+| Name            | Type       | Description |
+| ----------------| ---------- | ----------- |
+| JWT             | string     | return JWT  |
+| refreshToken    | string     |             |
+| error           | ErrorValue | Errors      |
 
 ```javascript
 import { getAuthMessage, AuthMessage, getJWT } from "@lighthouse-web3/kavach";
@@ -652,6 +739,62 @@ async function main() {
   const { JWT, error } = await getJWT(signer.address, signedMessage);
   console.log(typeof JWT == "string"); //true;
   console.log(error == null); //true;
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+
+- ### _transferOwnership(address: string, cid: string, newOwner: string, auth_token: string, resetSharedTo: boolean = true)_
+
+Transfer Ownership of a Resource
+
+#### Parameters
+
+| Name             | Type    | Default | Description                                      |
+| ---------------- | ------- | ------- | ------------------------------------------------ |
+| address          | string  |         | Address of the current owner of the resource    |
+| cid              | string  |         | Content ID (CID) of the resource                |
+| newOwner         | string  |         | Address of the new owner for the resource       |
+| auth_token     | string  |         | Authentication payload or token                 |
+| resetSharedTo    | boolean | true    | Reset shared permissions when ownership changes |
+
+#### Returns
+
+| Name       | Type   | Description                       |
+| ---------- | ------ | --------------------------------- |
+| result     | string | Result of the ownership transfer  |
+| error      | Error  | Any error that occurs             |
+
+#### Example
+
+```javascript
+import { transferOwnership } from "@lighthouse-web3/kavach";
+
+// Example usage of transferOwnership function
+async function main() {
+  const currentOwner = "0x1234567890abcdef";
+  const resourceId = "QmXyZAbCdEfGhIjK";
+  const newOwner = "0x9876543210fedcba";
+  const authPayload = "your-authentication-token";
+
+  const { result, error } = await transferOwnership(
+    currentOwner,
+    resourceId,
+    newOwner,
+    authPayload
+  );
+
+  if (error) {
+    console.error("Error:", error);
+  } else {
+    console.log("Ownership transfer result:", result);
+  }
 }
 
 main()

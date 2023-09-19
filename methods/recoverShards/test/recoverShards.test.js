@@ -96,6 +96,6 @@ describe("recover Shards", () => {
       5
     );
     expect(shards).toEqual([]);
-    expect(error?.message).toBe("you don't have access");
+    expect(error?.message).toBe("Access Denied");
   }, 20000);
 });
