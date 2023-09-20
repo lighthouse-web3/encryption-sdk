@@ -1,4 +1,11 @@
 const axios = require("axios");
+const {
+  lighthouseBLSNode,
+  lighthouseBLSNodeDev,
+  isDev,
+} = require("../../config");
+const { isEqual, isCidReg } = require("../../util/index");
+
 
 module.exports.transferOwnership = async (
   address,
@@ -8,6 +15,9 @@ module.exports.transferOwnership = async (
   resetSharedTo = true
 ) => {
   try {
+    if (!isCidReg(cid)) {
+      throw new Error("Invalid CID");
+    }
     const nodeIndexSelected = [1, 2, 3, 4, 5];
     const nodeUrl = nodeIndexSelected.map((elem) =>
       isDev
@@ -15,7 +25,7 @@ module.exports.transferOwnership = async (
         : `${lighthouseBLSNode}/api/transferOwnership/${elem}`
     );
     // send encryption key
-    const recoveredShards = await Promise.all(
+    const data = await Promise.all(
       nodeUrl.map((url) => {
         return axios
           .post(
@@ -33,23 +43,17 @@ module.exports.transferOwnership = async (
             }
           )
           .then((res) => {
-            return res?.data?.payload;
+            return res?.data;
           });
       })
     );
     return {
-      shards: recoveredShards,
+      isSuccess: isEqual(...data) && data[0]?.message === "success",
       error: null,
     };
   } catch (err) {
-    if (err?.response?.data?.message.includes("null")) {
-      return {
-        shards: [],
-        error: `cid not found`,
-      };
-    }
     return {
-      shards: [],
+      isSuccess: false,
       error: err?.response?.data || err.message,
     };
   }

@@ -102,3 +102,36 @@ export function getJWT(
   address: string,
   signedMessage: SignedMessage,
 ): Promise<{ JWT: string | null, error: ErrorValue }>
+
+export function transferOwnership(
+  address: string,
+  cid: string,
+  newOwner: string,
+  auth_token: SignedMessage | JWT,
+  resetSharedTo: boolean
+): Promise<LightHouseSDKResponse>;
+
+interface IGetAccessCondition {
+  aggregator: string;
+  conditions?: {
+    id: number;
+    chain: string;
+    method: string;
+    standardContractType: string;
+    contractAddress: string;
+    returnValueTest: {
+      comparator: string;
+      value: number;
+    };
+    parameters: string[];
+  }[];
+  conditionsSolana: any[]; // You can replace 'any' with a specific type if needed.
+  sharedTo: any[]; // You can replace 'any' with a specific type if needed.
+  owner: string;
+  cid: string;
+}
+
+
+export function getAccessCondition(
+  cid: string
+): Promise<{ data: IGetAccessCondition }>;

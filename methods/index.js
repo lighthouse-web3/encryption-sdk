@@ -8,6 +8,8 @@ const { shardKey } = require("./shardKey");
 const { revokeAccess } = require("./revokeAccess");
 const { accessControl } = require("./accessControl");
 const { shareToAddress } = require("./shareToAddress");
+const { transferOwnership } = require("./transferOwnership")
+const { getAccessCondition } = require("./getAccessCondition")
 
 module.exports = {
   generate,
@@ -20,4 +22,6 @@ module.exports = {
   shardKey,
   accessControl,
   shareToAddress,
+  transferOwnership,
+  getAccessCondition
 };
