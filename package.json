@@ -16,7 +16,7 @@
     "coverage": "jest  --runInBand --coverage"
   },
   "devDependencies": {
-    "ethers": "^5.7.2",
+    "ethers": "^6.7.1",
     "jest": "^29.3.1"
   },
   "repository": {
