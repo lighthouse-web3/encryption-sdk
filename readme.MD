@@ -224,7 +224,7 @@ recover key shards to lighthouse's Node
 #### Demo
 
 ```javascript
-import { getAuthMessage, saveShards, generate } from "@lighthouse-web3/kavach";
+import { getAuthMessage, saveShards, generate, recoverShards } from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
@@ -260,7 +260,7 @@ async function main() {
   console.log(error == null); //true;
   console.log(shards.length === 3); // true;
 
-  const { masterKey: recoveredKey } = await recoverKey(keyShards);
+  const { masterKey: recoveredKey } = await recoverKey(shards);
   console.log(masterKey === recoveredKey); //true
 }
 
