@@ -1,6 +1,6 @@
 {
   "name": "@lighthouse-web3/kavach",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Encryption SDK: Build your trustless, decentralized and fault resistance Application using distributed key shades with threshold cryptography",
   "main": "index.js",
   "author": "xlassix",
