@@ -36,10 +36,10 @@ This method generates randomized key shards
 
 #### returns
 
-| Name      | Type                        | Description           |
-| --------- | --------------------------- | --------------------- |
-| masterKey | string                      | 32 byte string or key |
-| keyShards | {key:string,index:string}[] | key shards            |
+| Name      | Type                        | Description            |
+| --------- | --------------------------- | ---------------------- |
+| masterKey | string                      | 32 byte string or key  |
+| keyShards | {key:string,index:string}[] | key shards             |
 
 #### Demo
 
@@ -73,9 +73,9 @@ This method recovers the master key from the shards generated
 #### returns
 
 | Name      | Type       | Description           |
-| --------- | ---------- | --------------------- | ----- |
-| masterKey | string     | 32 byte string or key |
-| error     | ErrorValue | null                  | error |
+| --------- | ---------- | --------------------- |
+| masterKey | string     | 32 byte string or key |       
+| error     | ErrorValue | null                  |
 
 #### Demo
 

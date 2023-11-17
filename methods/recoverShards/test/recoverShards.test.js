@@ -3,6 +3,10 @@ const { getAuthMessage } = require("../../getAuthMessage");
 const { saveShards } = require("../../saveShards");
 const ethers = require("ethers");
 
+
+/**
+ * @jest-environment jsdom
+ */
 describe("recover Shards", () => {
   let signer;
 
