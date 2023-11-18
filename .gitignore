@@ -5,3 +5,4 @@ temp
 yarn-error.log
 .vscode/
 *.txt
+dist/
