@@ -1,15 +1,16 @@
-import api from "../../axios";
+import axios from "axios";
+import defaultConfig from "../../config";
 
 export const getJWT = async (address: string, payload: string, useAsRefreshToken = false) => {
   try {
-    const data = !useAsRefreshToken ? await api
+    const data = !useAsRefreshToken ? await axios
       .post(
-        `/api/message/get-jwt`,
+        `${defaultConfig.isDev ? defaultConfig.lighthouseBLSNodeDev : defaultConfig.lighthouseAuthNode}/api/message/get-jwt`,
         { address, signature: payload },
       )
-      .then((res) => res.data) : await api
+      .then((res) => res.data) : await axios
         .put(
-          `/api/message/get-jwt`,
+          `${defaultConfig.isDev ? defaultConfig.lighthouseBLSNodeDev : defaultConfig.lighthouseAuthNode}/api/message/get-jwt`,
           { address, refreshToken: payload },
           {
             headers: {
