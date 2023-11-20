@@ -3,8 +3,8 @@
   "version": "0.1.5",
   "description": "Encryption SDK: Build your trustless, decentralized and fault resistance Application using distributed key shades with threshold cryptography",
   "author": "xlassix",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/methods/index.js",
+  "types": "./dist/methods/index.d.ts",
   "license": "MIT",
     "files": [
     "dist/**/*"

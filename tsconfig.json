@@ -3,9 +3,10 @@
     "outDir": "dist",
     "target": "es2022",
     "lib": [
-      "es2019"
+      "es2019",
+      "dom" 
     ],
-    "module": "commonjs",
+    "module": "es2020",
     "sourceMap": false,
     "strict": true,
     "esModuleInterop": true,
@@ -15,10 +16,11 @@
     "moduleResolution": "node",
     "allowJs": true,
     "declaration": true,
+    "resolveJsonModule": true,
     "types": [
-      "node"
+      "node" // Consider conditionally including this only for Node.js builds
     ],
-    "resolveJsonModule": true
+    "rootDir": "./src", // Define root directory
   },
   "include": [
     "src"
@@ -27,7 +29,6 @@
     "node_modules",
     "**/*.spec.ts",
     "**/*.test.ts",
-    ".vscode",
-    ".d.ts"
+    ".vscode"
   ]
 }

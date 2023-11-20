@@ -1,7 +1,7 @@
 import { GeneratedKey } from "../../types";
 
 let bls: any = null;
-// @ts-expect-error
+////@ts-expect-error
 if (typeof window === "undefined") {
   bls = eval("require")("bls-eth-wasm");
 } else {
