@@ -1,5 +1,6 @@
 import { API_NODE_HANDLER } from "../../util";
 import { AuthToken, LightHouseSDKResponse } from "../../types";
+import { isCidReg, isEqual } from "../../util";
 
 export const transferOwnership = async (
   address: string,
