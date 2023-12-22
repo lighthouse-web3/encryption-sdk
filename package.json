@@ -20,7 +20,7 @@
     "src/**/*": [
       "prettier --single-quote --write"
     ],
-    "**/*.ts": "eslint"
+    "**/*.ts": "eslint --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +41,8 @@
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^29.5.8",
     "@types/node": "^20.9.1",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
     "babel-jest": "^29.4.1",
     "ethers": "^6.3.1",
     "eslint": "8.25.0",
