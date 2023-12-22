@@ -1,13 +1,16 @@
 import { API_NODE_HANDLER } from "../../util";
 import { AuthToken, LightHouseSDKResponse } from "../../types";
 
-const { isEqual, isCidReg } = require("../../util/index");
-
-export const revokeAccess = async (address: string, cid: string, auth_token: AuthToken, revokeTo: Array<string>): Promise<LightHouseSDKResponse> => {
+export const revokeAccess = async (
+  address: string,
+  cid: string,
+  auth_token: AuthToken,
+  revokeTo: Array<string>
+): Promise<LightHouseSDKResponse> => {
   if (!isCidReg(cid)) {
     return {
       isSuccess: false,
-      error: "Invalid CID"
+      error: "Invalid CID",
     };
   }
   try {
@@ -17,16 +20,14 @@ export const revokeAccess = async (address: string, cid: string, auth_token: Aut
     // send encryption key
     const data = await Promise.all(
       nodeUrl.map((url) => {
-        return API_NODE_HANDLER
-          (url, "DELETE", auth_token,
-            {
-              address,
-              cid,
-              revokeTo,
-            })
+        return API_NODE_HANDLER(url, "DELETE", auth_token, {
+          address,
+          cid,
+          revokeTo,
+        });
       })
     );
-    let temp = data.map((elem, index) => ({ ...elem, data: null }));
+    const temp = data.map((elem, index) => ({ ...elem, data: null }));
     return {
       isSuccess: isEqual(...temp),
       error: null,

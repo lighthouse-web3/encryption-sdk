@@ -1,6 +1,6 @@
 import { API_NODE_HANDLER } from "../../util";
 import { AuthToken, LightHouseSDKResponse } from "../../types";
-const { isEqual, isCidReg } = require("../../util/index");
+import { isEqual, isCidReg } from "../../util/index";
 
 export const shareToAddress = async (
   address: string,
@@ -11,7 +11,7 @@ export const shareToAddress = async (
   if (!isCidReg(cid)) {
     return {
       isSuccess: false,
-      error: "Invalid CID"
+      error: "Invalid CID",
     };
   }
   try {
@@ -20,18 +20,14 @@ export const shareToAddress = async (
     // send encryption key
     const data = await Promise.all(
       nodeUrl.map((url) => {
-        return API_NODE_HANDLER
-          (
-            url, "PUT", auth_token,
-            {
-              address,
-              cid: cid,
-              shareTo,
-            },
-          )
+        return API_NODE_HANDLER(url, "PUT", auth_token, {
+          address,
+          cid: cid,
+          shareTo,
+        });
       })
     );
-    let temp = data.map((elem, index) => ({ ...elem, data: null }));
+    const temp = data.map((elem, index) => ({ ...elem, data: null }));
     return {
       isSuccess: isEqual(...temp) && temp[0]?.message === "success",
       error: null,

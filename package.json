@@ -17,10 +17,10 @@
     "node": ">=18.0.0"
   },
   "lint-staged": {
+    "**/*.ts": "eslint --fix",
     "src/**/*": [
       "prettier --single-quote --write"
-    ],
-    "**/*.ts": "eslint --fix"
+    ]
   },
   "eslintConfig": {
     "extends": [

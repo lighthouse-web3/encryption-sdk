@@ -1,7 +1,5 @@
 import { API_NODE_HANDLER } from "../../util";
 import { AuthToken, LightHouseSDKResponse } from "../../types";
-const { isEqual, isCidReg } = require("../../util/index");
-
 
 export const transferOwnership = async (
   address: string,
@@ -13,25 +11,23 @@ export const transferOwnership = async (
   if (!isCidReg(cid)) {
     return {
       isSuccess: false,
-      error: "Invalid CID"
+      error: "Invalid CID",
     };
   }
   try {
     const nodeIndexSelected = [1, 2, 3, 4, 5];
-    const nodeUrl = nodeIndexSelected.map((elem) => `/api/transferOwnership/${elem}`);
+    const nodeUrl = nodeIndexSelected.map(
+      (elem) => `/api/transferOwnership/${elem}`
+    );
     // send encryption key
     const data = await Promise.all(
       nodeUrl.map((url) => {
-        return API_NODE_HANDLER
-          (
-            url, "POST", auth_token,
-            {
-              address,
-              cid,
-              newOwner,
-              resetSharedTo
-            },
-          )
+        return API_NODE_HANDLER(url, "POST", auth_token, {
+          address,
+          cid,
+          newOwner,
+          resetSharedTo,
+        });
       })
     );
     return {
@@ -39,7 +35,7 @@ export const transferOwnership = async (
       error: null,
     };
   } catch (err: any) {
-    console.log({ err })
+    console.log({ err });
     return {
       isSuccess: false,
       error: JSON.parse(err.message),
