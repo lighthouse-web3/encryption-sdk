@@ -14,4 +14,13 @@ describe("isKeyShadable", () => {
     expect(isShardable).toBe(true);
     expect(keyShards.length).toBe(5);
   }, 20000);
+
+  test("sharding", async () => {
+    const knownKey = "0b2ccf87909bd1215858e5c0ec99359cadfcf918a4fac53e3e88e9ec28bec678";
+    const { isShardable, keyShards } = await _package.shardKey(knownKey, 3, 5);
+    //recover keys from shards
+    console.log(keyShards, isShardable)
+    const { masterKey } = await _package.recoverKey([keyShards[0], keyShards[3], keyShards[4]]);
+    expect(masterKey).toBe(knownKey);
+  })
 });

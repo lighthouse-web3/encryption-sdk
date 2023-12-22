@@ -16,7 +16,7 @@ export const shardKey = async (key: string, threshold = 3, keyCount = 5) => {
     masterKey.deserializeHexStr(key);
     msk.push(masterKey);
 
-    for (let i = 0; i < threshold; i++) {
+    for (let i = 0; i < threshold - 1; i++) {
       let sk = new bls.SecretKey();
       sk.setByCSPRNG();
       msk.push(sk);

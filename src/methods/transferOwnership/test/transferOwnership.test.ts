@@ -24,8 +24,6 @@ describe("Transfer OwnerShip", () => {
       signer2.address,
       signedMessage
     );
-    expect(error).toBe(null);
-    expect(isSuccess).toBe(true);
     authMessage = await _package.getAuthMessage(signer2.address);
     signedMessage = await signer2.signMessage(authMessage.message);
     const { error: _error, isSuccess: _isSuccess } = await _package.transferOwnership(
@@ -34,6 +32,8 @@ describe("Transfer OwnerShip", () => {
       signer.address,
       signedMessage
     );
+    expect(error).toBe(null);
+    expect(isSuccess).toBe(true);
     expect(_error).toBe(null);
     expect(_isSuccess).toBe(true);
   }, 80000);

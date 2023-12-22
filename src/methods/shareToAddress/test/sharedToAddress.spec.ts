@@ -2,7 +2,7 @@ import _package from "../..";
 import { ethers } from "ethers";
 import { getAuthMessage } from "../../getAuthMessage";
 
-describe("share File To address", () => {
+describe("shareFile To address", () => {
   let signer, signer2;
 
   beforeAll(async () => {

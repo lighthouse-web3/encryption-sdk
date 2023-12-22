@@ -1,24 +1,17 @@
-import axios from "axios";
-import defaultConfig from "../../config";
+import { API_NODE_HANDLER } from "../../util";
 
-export const getJWT = async (address: string, payload: string, useAsRefreshToken = false) => {
+export const getJWT = async (address: string, payload: string, useAsRefreshToken = false, chain = "ALL") => {
   try {
-    const data = !useAsRefreshToken ? await axios
-      .post(
-        `${defaultConfig.isDev ? defaultConfig.lighthouseBLSNodeDev : defaultConfig.lighthouseAuthNode}/api/message/get-jwt`,
-        { address, signature: payload },
-      )
-      .then((res) => res.data) : await axios
-        .put(
-          `${defaultConfig.isDev ? defaultConfig.lighthouseBLSNodeDev : defaultConfig.lighthouseAuthNode}/api/message/get-jwt`,
+    const data = !useAsRefreshToken ? await API_NODE_HANDLER
+      (
+        `/api/message/get-jwt`, "POST", "",
+        { address, signature: payload, chain },
+
+      ) : await API_NODE_HANDLER
+        (
+          `/api/message/get-jwt`, "PUT", "",
           { address, refreshToken: payload },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((res) => res.data);
+        );
     return { JWT: data.token, refreshToken: data.refreshToken, error: null };
   } catch (err) {
     return { JWT: null, error: "Invalid Signature" };

@@ -1,6 +1,5 @@
-import defaultConfig from "../../config";
+import { API_NODE_HANDLER } from "../../util";
 import { AuthToken, LightHouseSDKResponse } from "../../types";
-import axios from "axios";
 const { isEqual, isCidReg } = require("../../util/index");
 
 
@@ -11,37 +10,28 @@ export const transferOwnership = async (
   auth_token: AuthToken,
   resetSharedTo = true
 ): Promise<LightHouseSDKResponse> => {
+  if (!isCidReg(cid)) {
+    return {
+      isSuccess: false,
+      error: "Invalid CID"
+    };
+  }
   try {
-    if (!isCidReg(cid)) {
-      throw new Error("Invalid CID");
-    }
     const nodeIndexSelected = [1, 2, 3, 4, 5];
-    const nodeUrl = nodeIndexSelected.map((elem) =>
-      defaultConfig.isDev
-        ? `${defaultConfig.lighthouseBLSNodeDev}:900${elem}/api/transferOwnership/${elem}`
-        : `${defaultConfig.lighthouseBLSNode}/api/transferOwnership/${elem}`
-    );
+    const nodeUrl = nodeIndexSelected.map((elem) => `/api/transferOwnership/${elem}`);
     // send encryption key
     const data = await Promise.all(
       nodeUrl.map((url) => {
-        return axios
-          .post(
-            url,
+        return API_NODE_HANDLER
+          (
+            url, "POST", auth_token,
             {
               address,
               cid,
               newOwner,
               resetSharedTo
             },
-            {
-              headers: {
-                Authorization: "Bearer " + auth_token,
-              },
-            }
           )
-          .then((res) => {
-            return res?.data;
-          });
       })
     );
     return {
@@ -49,9 +39,10 @@ export const transferOwnership = async (
       error: null,
     };
   } catch (err: any) {
+    console.log({ err })
     return {
       isSuccess: false,
-      error: err?.response?.data || err.message,
+      error: JSON.parse(err.message),
     };
   }
 };

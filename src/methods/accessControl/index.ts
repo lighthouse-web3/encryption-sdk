@@ -1,8 +1,7 @@
 import { AuthToken, Condition, DecryptionType, KeyShard, ChainType, LightHouseSDKResponse } from "../../types";
-import axios from "axios";
 import config from "../../config";
 import { updateConditionSchema, accessConditionSchema } from "./validator";
-import { isEqual, isCidReg } from "../../util/index";
+import { isEqual, isCidReg, API_NODE_HANDLER } from "../../util/index";
 
 export const accessControl = async (
   address: string,
@@ -43,52 +42,34 @@ export const accessControl = async (
     const nodeId = [1, 2, 3, 4, 5];
     const nodeUrl = nodeId.map((elem) =>
       config.isDev
-        ? `${config.lighthouseBLSNodeDev}:900${elem}/api/fileAccessConditions/${elem}`
-        : `${config.lighthouseBLSNode}/api/fileAccessConditions/${elem}`
+        ? `:900${elem}/api/fileAccessConditions/${elem}`
+        : `/api/fileAccessConditions/${elem}`
     );
     // send encryption key
     const data = keyShards.length == 5 ? await Promise.all(
       nodeUrl.map((url, index) => {
-        return axios
-          .post(
-            url,
+        return API_NODE_HANDLER(url, "POST", auth_token, {
+          address,
+          cid,
+          conditions,
+          aggregator,
+          decryptionType,
+          chainType,
+          payload: keyShards[index],
+        })
+      }
+      )) : await Promise.all(
+        nodeUrl.map((url) => {
+          return API_NODE_HANDLER(
+            url, "PUT", auth_token,
             {
               address,
               cid,
               conditions,
               aggregator,
-              decryptionType,
               chainType,
-              payload: keyShards[index],
-            },
-            {
-              headers: {
-                Authorization: "Bearer " + auth_token,
-              },
             }
           )
-          .then((res: any) => res.data);
-      })
-    ) :
-      await Promise.all(
-        nodeUrl.map((url) => {
-          return axios
-            .put(
-              url,
-              {
-                address,
-                cid,
-                conditions,
-                aggregator,
-                chainType,
-              },
-              {
-                headers: {
-                  Authorization: "Bearer " + auth_token,
-                },
-              }
-            )
-            .then((res: any) => res.data);
         })
       );
     return {
@@ -96,9 +77,6 @@ export const accessControl = async (
       error: null,
     };
   } catch (err: any) {
-    return {
-      isSuccess: false,
-      error: err?.response?.data || err.message,
-    };
+    return { isSuccess: false, error: JSON.parse(err?.message) };
   }
 };

@@ -1,15 +1,13 @@
-import axios from "axios";
-import defaultConfig from "../../config";
+import { API_NODE_HANDLER } from "../../util";
 import { AuthMessage } from "../../types";
 
 
 export const getAuthMessage = async (address: string): Promise<AuthMessage> => {
   try {
-    const data = await axios
-      .get(`${defaultConfig.isDev ? defaultConfig.lighthouseBLSNodeDev : defaultConfig.lighthouseAuthNode}/api/message/${address}`)
-      .then((res) => res.data[0].message);
-    return { message: data, error: null };
+    const data = await API_NODE_HANDLER(`/api/message/${address}`, "GET")
+    return { message: data[0].message, error: null };
   } catch (err: any) {
-    return { message: null, error: err?.response?.data || err.message };
+    console.log({ err })
+    return { message: null, error: JSON.parse(err?.message) };
   }
 };

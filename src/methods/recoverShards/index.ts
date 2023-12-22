@@ -1,6 +1,5 @@
-import defaultConfig from "../../config";
+import { API_NODE_HANDLER } from "../../util";
 import { AuthToken } from "../../types";
-import axios from "axios";
 import { RecoverShards } from "../../types"
 
 
@@ -27,30 +26,22 @@ export const recoverShards = async (
 ): Promise<RecoverShards> => {
   try {
     const nodeIndexSelected = randSelect(numOfShards, 5);
-    const nodeUrl = nodeIndexSelected.map((elem) =>
-      defaultConfig.isDev
-        ? `${defaultConfig.lighthouseBLSNodeDev}:900${elem}/api/retrieveSharedKey/${elem}`
-        : `${defaultConfig.lighthouseBLSNode}/api/retrieveSharedKey/${elem}`
-    );
+    const nodeUrl = nodeIndexSelected.map((elem) => `/api/retrieveSharedKey/${elem}`);
     // send encryption key
     const recoveredShards = await Promise.all(
       nodeUrl.map((url) => {
-        return axios
-          .post(
-            url,
-            {
-              address,
-              cid,
-              dynamicData
-            },
-            {
-              headers: {
-                Authorization: "Bearer " + auth_token,
-              },
-            }
-          )
-          .then((res) => {
-            return res?.data?.payload;
+        return API_NODE_HANDLER(
+          url,
+          "POST",
+          auth_token,
+          {
+            address,
+            cid,
+            dynamicData
+          },
+        )
+          .then((data) => {
+            return data?.payload;
           });
       })
     );
@@ -59,7 +50,7 @@ export const recoverShards = async (
       error: null,
     };
   } catch (err: any) {
-    if (err?.response?.data?.message.includes("null")) {
+    if (err.message.includes("null")) {
       return {
         shards: [],
         error: `cid not found`,
@@ -67,7 +58,7 @@ export const recoverShards = async (
     }
     return {
       shards: [],
-      error: err?.response?.data || err.message,
+      error: JSON.parse(err.message),
     };
   }
 };

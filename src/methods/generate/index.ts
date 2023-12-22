@@ -24,7 +24,7 @@ export const generate = async (threshold = 3, keyCount = 5): Promise<GeneratedKe
   */
 
   // other members of the array ingredients used in the algorithm
-  for (let i = 0; i < threshold; i++) {
+  for (let i = 0; i < threshold - 1; i++) {
     let sk = new bls.SecretKey();
     sk.setByCSPRNG();
     msk.push(sk);
