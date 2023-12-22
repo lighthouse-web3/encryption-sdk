@@ -15,8 +15,6 @@ describe("revoke file address", () => {
   });
 
   test("revoke to address", async () => {
-
-    
     const authMessage = await getAuthMessage(signer.address);
     const signedMessage = await signer.signMessage(authMessage.message);
     const { error, isSuccess } = await _package.revokeAccess(
