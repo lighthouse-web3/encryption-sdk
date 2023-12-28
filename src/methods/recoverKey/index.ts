@@ -1,13 +1,11 @@
 import { KeyShard } from "../../types";
 
 let bls: any = null;
-////@ts-expect-error
 if (typeof window === "undefined") {
   bls = eval("require")("bls-eth-wasm");
 } else {
   bls = require("bls-eth-wasm/browser");
 }
-
 
 export const recoverKey = async (keyShards: KeyShard[]) => {
   if (
@@ -20,18 +18,18 @@ export const recoverKey = async (keyShards: KeyShard[]) => {
     );
   }
   try {
-    let idVec: any[] = [];
-    let secVec: any[] = [];
-    await bls.init(bls.BLS12_381);
+    const idVec: any[] = [];
+    const secVec: any[] = [];
+    await bls.init(bls.BLS12_381).then(() => bls.getCurveOrder());
 
     keyShards.map((keyShard) => {
-      let sk = new bls.SecretKey();
+      const sk = new bls.SecretKey();
       //convert readable string into secretKey vectors
       sk.deserializeHexStr(keyShard.key);
       secVec.push(sk);
 
       //convert readable string into Id vectors
-      let id = new bls.Id();
+      const id = new bls.Id();
       id.deserializeHexStr(keyShard.index);
       idVec.push(id);
     });
@@ -39,7 +37,7 @@ export const recoverKey = async (keyShards: KeyShard[]) => {
 
     //recover key
     sec.recover(secVec, idVec);
-    let s = sec.serializeToHexStr();
+    const s = sec.serializeToHexStr();
     return { masterKey: s, error: null };
   } catch (err) {
     return { masterKey: null, error: "can't recover Key" };

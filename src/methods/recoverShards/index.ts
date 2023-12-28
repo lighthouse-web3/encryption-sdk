@@ -1,22 +1,20 @@
-import defaultConfig from "../../config";
+import { API_NODE_HANDLER } from "../../util";
 import { AuthToken } from "../../types";
-import axios from "axios";
-import { RecoverShards } from "../../types"
-
+import { RecoverShards } from "../../types";
 
 function randRange(min: number, max: number) {
   return min + Math.floor(Math.random() * (max - min));
 }
-const randSelect = (k: number, n: number) => {
+function randSelect(k: number, n: number) {
   const a = [];
   let prev = -1;
   for (let i = 0; i < k; i++) {
-    let v = randRange(prev + 1, n - (k - i) + 1);
-    a.push(v + 1);
+    const v = randRange(prev + 1, n - (k - i) + 1);
+    a.push(v);
     prev = v;
   }
   return a;
-};
+}
 
 export const recoverShards = async (
   address: string,
@@ -27,31 +25,19 @@ export const recoverShards = async (
 ): Promise<RecoverShards> => {
   try {
     const nodeIndexSelected = randSelect(numOfShards, 5);
-    const nodeUrl = nodeIndexSelected.map((elem) =>
-      defaultConfig.isDev
-        ? `${defaultConfig.lighthouseBLSNodeDev}:900${elem}/api/retrieveSharedKey/${elem}`
-        : `${defaultConfig.lighthouseBLSNode}/api/retrieveSharedKey/${elem}`
+    const nodeUrl = nodeIndexSelected.map(
+      (elem) => `/api/retrieveSharedKey/${elem}`
     );
     // send encryption key
     const recoveredShards = await Promise.all(
       nodeUrl.map((url) => {
-        return axios
-          .post(
-            url,
-            {
-              address,
-              cid,
-              dynamicData
-            },
-            {
-              headers: {
-                Authorization: "Bearer " + auth_token,
-              },
-            }
-          )
-          .then((res) => {
-            return res?.data?.payload;
-          });
+        return API_NODE_HANDLER(url, "POST", auth_token, {
+          address,
+          cid,
+          dynamicData,
+        }).then((data) => {
+          return data?.payload;
+        });
       })
     );
     return {
@@ -59,7 +45,7 @@ export const recoverShards = async (
       error: null,
     };
   } catch (err: any) {
-    if (err?.response?.data?.message.includes("null")) {
+    if (err.message.includes("null")) {
       return {
         shards: [],
         error: `cid not found`,
@@ -67,7 +53,7 @@ export const recoverShards = async (
     }
     return {
       shards: [],
-      error: err?.response?.data || err.message,
+      error: JSON.parse(err.message),
     };
   }
 };

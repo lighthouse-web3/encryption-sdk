@@ -8,21 +8,6 @@ const coverageToNumber = 80 // [0..100]
 export default {
     testTimeout: 600 * 1000,
     setTimeout: 600 * 1000,
-    projects: [
-        {
-            displayName: 'dom',
-            testEnvironment: 'jsdom',
-            snapshotSerializers: ['enzyme-to-json/serializer'],
-            testMatch: ['**/**/*.test.ts?(x)']
-        },
-        {
-            displayName: 'node',
-            testEnvironment: 'node',
-            testMatch: [
-                '**/**/*.test.ts?(x)',
-            ]
-        },
-    ],
     verbose: true,
     rootDir: './',
     clearMocks: true, // clear mocks before every test
