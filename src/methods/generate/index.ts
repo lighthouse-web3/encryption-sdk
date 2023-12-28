@@ -1,31 +1,33 @@
 import { GeneratedKey } from "../../types";
 
 let bls: any = null;
-////@ts-expect-error
 if (typeof window === "undefined") {
   bls = eval("require")("bls-eth-wasm");
 } else {
   bls = require("bls-eth-wasm/browser");
 }
 
-export const generate = async (threshold = 3, keyCount = 5): Promise<GeneratedKey> => {
+export const generate = async (
+  threshold = 3,
+  keyCount = 5
+): Promise<GeneratedKey> => {
   if (threshold > keyCount) {
     throw new Error("keyCount must be greater then threshold");
   }
 
-  let msk: any = [];
-  let idVec: any = [];
-  let secVec: any = [];
+  const msk: any = [];
+  const idVec: any = [];
+  const secVec: any = [];
 
-  await bls.init(bls.BLS12_381);
+  await bls.init(bls.BLS12_381).then(() => bls.getCurveOrder());
 
   /*
   setup master secret key
   */
 
   // other members of the array ingredients used in the algorithm
-  for (let i = 0; i < threshold - 1; i++) {
-    let sk = new bls.SecretKey();
+  for (let i = 0; i < threshold; i++) {
+    const sk = new bls.SecretKey();
     sk.setByCSPRNG();
     msk.push(sk);
   }
@@ -35,12 +37,12 @@ export const generate = async (threshold = 3, keyCount = 5): Promise<GeneratedKe
   */
   for (let i = 0; i < keyCount; i++) {
     //create random Vector ID(points on the ECC)
-    let id = new bls.Id();
+    const id = new bls.Id();
     id.setByCSPRNG();
     idVec.push(id);
 
     //Create a secKey Shard
-    let sk = new bls.SecretKey();
+    const sk = new bls.SecretKey();
     sk.share(msk, idVec[i]);
     secVec.push(sk);
   }

@@ -1,21 +1,20 @@
 import { API_NODE_HANDLER } from "../../util";
 import { AuthToken } from "../../types";
-import { RecoverShards } from "../../types"
-
+import { RecoverShards } from "../../types";
 
 function randRange(min: number, max: number) {
   return min + Math.floor(Math.random() * (max - min));
 }
-const randSelect = (k: number, n: number) => {
+function randSelect(k: number, n: number) {
   const a = [];
   let prev = -1;
   for (let i = 0; i < k; i++) {
-    let v = randRange(prev + 1, n - (k - i) + 1);
-    a.push(v + 1);
+    const v = randRange(prev + 1, n - (k - i) + 1);
+    a.push(v);
     prev = v;
   }
   return a;
-};
+}
 
 export const recoverShards = async (
   address: string,
@@ -26,23 +25,19 @@ export const recoverShards = async (
 ): Promise<RecoverShards> => {
   try {
     const nodeIndexSelected = randSelect(numOfShards, 5);
-    const nodeUrl = nodeIndexSelected.map((elem) => `/api/retrieveSharedKey/${elem}`);
+    const nodeUrl = nodeIndexSelected.map(
+      (elem) => `/api/retrieveSharedKey/${elem}`
+    );
     // send encryption key
     const recoveredShards = await Promise.all(
       nodeUrl.map((url) => {
-        return API_NODE_HANDLER(
-          url,
-          "POST",
-          auth_token,
-          {
-            address,
-            cid,
-            dynamicData
-          },
-        )
-          .then((data) => {
-            return data?.payload;
-          });
+        return API_NODE_HANDLER(url, "POST", auth_token, {
+          address,
+          cid,
+          dynamicData,
+        }).then((data) => {
+          return data?.payload;
+        });
       })
     );
     return {
