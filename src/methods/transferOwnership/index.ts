@@ -36,7 +36,6 @@ export const transferOwnership = async (
       error: null,
     };
   } catch (err: any) {
-    console.log({ err });
     return {
       isSuccess: false,
       error: JSON.parse(err.message),

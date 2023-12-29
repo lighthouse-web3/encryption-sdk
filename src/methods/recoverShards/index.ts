@@ -2,18 +2,22 @@ import { API_NODE_HANDLER } from "../../util";
 import { AuthToken } from "../../types";
 import { RecoverShards } from "../../types";
 
-function randRange(min: number, max: number) {
-  return min + Math.floor(Math.random() * (max - min));
-}
-function randSelect(k: number, n: number) {
-  const a = [];
-  let prev = -1;
-  for (let i = 0; i < k; i++) {
-    const v = randRange(prev + 1, n - (k - i) + 1);
-    a.push(v);
-    prev = v;
+function shuffleArray(array: number[]): number[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-  return a;
+  return array;
+}
+
+function randSelect(k: number, n: number): number[] {
+  if (k > n) {
+    throw new Error("k cannot be greater than n");
+  }
+
+  const numbers = Array.from({ length: n }, (_, i) => i + 1);
+  const shuffledNumbers = shuffleArray(numbers);
+  return shuffledNumbers.slice(0, k).sort((a, b) => a - b);
 }
 
 export const recoverShards = async (
@@ -53,7 +57,7 @@ export const recoverShards = async (
     }
     return {
       shards: [],
-      error: JSON.parse(err.message),
+      error: JSON.parse(err?.message),
     };
   }
 };
