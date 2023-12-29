@@ -14,4 +14,59 @@ describe("isKeyShadable", () => {
     expect(isShardable).toBe(true);
     expect(keyShards.length).toBe(5);
   }, 20000);
+
+  test("test MasterKey Recovery: 4/5 part", async () => {
+    const knownKey =
+      "0a16088df55283663f7fea6c5f315bde968024b7ac5d715af0325a5507700e5e";
+    const { isShardable, keyShards } = await _package.shardKey(knownKey, 3, 5);
+    //recover keys from shards
+    console.log(keyShards, isShardable, knownKey);
+    const { masterKey } = await _package.recoverKey([
+      keyShards[2],
+      keyShards[0],
+      keyShards[1],
+      keyShards[4],
+    ]);
+    expect(masterKey).toBe(knownKey);
+  });
+  test("test MasterKey Recovery: 5/5 part", async () => {
+    const knownKey =
+      "0a16088df55283663f7fea6c5f315bde968024b7ac5d715af0325a5507700e5e";
+    const { isShardable, keyShards } = await _package.shardKey(knownKey, 3, 5);
+    //recover keys from shards
+    console.log(keyShards, isShardable, knownKey);
+    const { masterKey } = await _package.recoverKey([
+      keyShards[2],
+      keyShards[0],
+      keyShards[1],
+      keyShards[4],
+      keyShards[3],
+    ]);
+    expect(masterKey).toBe(knownKey);
+  });
+  test("test MasterKey Recovery: 3/5 part", async () => {
+    const knownKey =
+      "0a16088df55283663f7fea6c5f315bde968024b7ac5d715af0325a5507700e5e";
+    const { isShardable, keyShards } = await _package.shardKey(knownKey, 3, 5);
+    //recover keys from shards
+    console.log(keyShards, isShardable, knownKey);
+    const { masterKey } = await _package.recoverKey([
+      keyShards[2],
+      keyShards[3],
+      keyShards[4],
+    ]);
+    expect(masterKey).toBe(knownKey);
+  });
+  test("test MasterKey Recovery: 2/5 part", async () => {
+    const knownKey =
+      "0a16088df55283663f7fea6c5f315bde968024b7ac5d715af0325a5507700e5e";
+    const { isShardable, keyShards } = await _package.shardKey(knownKey, 3, 5);
+    //recover keys from shards
+    console.log(keyShards, isShardable, knownKey);
+    const { masterKey } = await _package.recoverKey([
+      keyShards[0],
+      keyShards[1],
+    ]);
+    expect(masterKey).not.toBe(knownKey);
+  });
 });

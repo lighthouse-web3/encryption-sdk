@@ -1,5 +1,4 @@
 let bls: any = null;
-////@ts-expect-error
 if (typeof window === "undefined") {
   bls = eval("require")("bls-eth-wasm");
 } else {
@@ -8,16 +7,16 @@ if (typeof window === "undefined") {
 
 export const shardKey = async (key: string, threshold = 3, keyCount = 5) => {
   try {
-    let msk = [];
-    let idVec: any[] = [];
-    let secVec = [];
-    await bls.init(bls.BLS12_381);
-    let masterKey = new bls.SecretKey();
+    const msk = [];
+    const idVec: any[] = [];
+    const secVec = [];
+    await bls.init(bls.BLS12_381).then(() => bls.getCurveOrder());
+    const masterKey = new bls.SecretKey();
     masterKey.deserializeHexStr(key);
     msk.push(masterKey);
 
     for (let i = 0; i < threshold; i++) {
-      let sk = new bls.SecretKey();
+      const sk = new bls.SecretKey();
       sk.setByCSPRNG();
       msk.push(sk);
     }
@@ -27,12 +26,12 @@ export const shardKey = async (key: string, threshold = 3, keyCount = 5) => {
     */
     for (let i = 0; i < keyCount; i++) {
       //create random Vector ID(points on the ECC)
-      let id = new bls.Id();
+      const id = new bls.Id();
       id.setByCSPRNG();
       idVec.push(id);
 
       //Create a secKey Shard
-      let sk = new bls.SecretKey();
+      const sk = new bls.SecretKey();
       sk.share(msk, idVec[i]);
       secVec.push(sk);
     }

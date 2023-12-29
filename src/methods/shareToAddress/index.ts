@@ -1,7 +1,6 @@
-import defaultConfig from "../../config";
+import { API_NODE_HANDLER } from "../../util";
 import { AuthToken, LightHouseSDKResponse } from "../../types";
-import axios from "axios";
-const { isEqual, isCidReg } = require("../../util/index");
+import { isEqual, isCidReg } from "../../util/index";
 
 export const shareToAddress = async (
   address: string,
@@ -9,37 +8,26 @@ export const shareToAddress = async (
   auth_token: AuthToken,
   shareTo: Array<string>
 ): Promise<LightHouseSDKResponse> => {
+  if (!isCidReg(cid)) {
+    return {
+      isSuccess: false,
+      error: "Invalid CID",
+    };
+  }
   try {
-    if (!isCidReg(cid)) {
-      throw new Error("Invalid CID");
-    }
     const nodeId = [1, 2, 3, 4, 5];
-    const nodeUrl = nodeId.map((elem) =>
-      defaultConfig.isDev
-        ? `${defaultConfig.lighthouseBLSNodeDev}:900${elem}/api/setSharedKey/${elem}`
-        : `${defaultConfig.lighthouseBLSNode}/api/setSharedKey/${elem}`
-    );
+    const nodeUrl = nodeId.map((elem) => `/api/setSharedKey/${elem}`);
     // send encryption key
     const data = await Promise.all(
       nodeUrl.map((url) => {
-        return axios
-          .put(
-            url,
-            {
-              address,
-              cid: cid,
-              shareTo,
-            },
-            {
-              headers: {
-                Authorization: "Bearer " + auth_token,
-              },
-            }
-          )
-          .then((res) => res.data);
+        return API_NODE_HANDLER(url, "PUT", auth_token, {
+          address,
+          cid: cid,
+          shareTo,
+        });
       })
     );
-    let temp = data.map((elem, index) => ({ ...elem, data: null }));
+    const temp = data.map((elem, index) => ({ ...elem, data: null }));
     return {
       isSuccess: isEqual(...temp) && temp[0]?.message === "success",
       error: null,
@@ -47,7 +35,7 @@ export const shareToAddress = async (
   } catch (err: any) {
     return {
       isSuccess: false,
-      error: err?.response?.data || err.message,
+      error: JSON.parse(err.message),
     };
   }
 };

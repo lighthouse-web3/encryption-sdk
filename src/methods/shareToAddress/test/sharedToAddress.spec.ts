@@ -2,7 +2,7 @@ import _package from "../..";
 import { ethers } from "ethers";
 import { getAuthMessage } from "../../getAuthMessage";
 
-describe("share File To address", () => {
+describe("shareFile To address", () => {
   let signer, signer2;
 
   beforeAll(async () => {
@@ -11,6 +11,7 @@ describe("share File To address", () => {
       "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b",
       provider
     );
+
     signer2 = new ethers.Wallet(
       "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8a",
       provider
