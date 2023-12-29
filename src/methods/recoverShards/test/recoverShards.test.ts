@@ -3,11 +3,10 @@ import { getAuthMessage } from "../../getAuthMessage";
 import { saveShards } from "../../saveShards";
 import { ethers } from "ethers";
 
-
 /**
  * @jest-environment jsdom
  */
-describe("recover Shards", () => {
+describe("recoverShards:", () => {
   let signer;
 
   beforeAll(async () => {
@@ -85,8 +84,8 @@ describe("recover Shards", () => {
   }, 20000);
 
   test("recover Key Unauthorized", async () => {
-    let signer2 = new ethers.Wallet(
-      "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8f",
+    const signer2 = new ethers.Wallet(
+      "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8f"
     );
     const authMessage = await getAuthMessage(signer2.address);
     const signedMessage2 = await signer2.signMessage(authMessage.message ?? "");
