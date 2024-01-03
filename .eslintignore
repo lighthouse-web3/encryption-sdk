@@ -1,0 +1,5 @@
+middlewares/authenticator.js
+**/*.test.js
+**/*.spec.js
+*.test.js
+*.spec.js

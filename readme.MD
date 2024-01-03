@@ -1,4 +1,4 @@
-# Kavach <img src="https://img.shields.io/badge/BETA-v0.1-green"/>
+# Kavach <img src="https://img.shields.io/badge/BETA-v0.1.5-green"/>
 
 Kavach is an encryption SDK that allows you to build your trustless, decentralized and fault-tolerant Applications using distributed key shards with threshold cryptography
 
@@ -36,10 +36,10 @@ This method generates randomized key shards
 
 #### returns
 
-| Name      | Type                        | Description           |
-| --------- | --------------------------- | --------------------- |
-| masterKey | string                      | 32 byte string or key |
-| keyShards | {key:string,index:string}[] | key shards            |
+| Name      | Type                        | Description            |
+| --------- | --------------------------- | ---------------------- |
+| masterKey | string                      | 32 byte string or key  |
+| keyShards | {key:string,index:string}[] | key shards             |
 
 #### Demo
 
@@ -73,9 +73,9 @@ This method recovers the master key from the shards generated
 #### returns
 
 | Name      | Type       | Description           |
-| --------- | ---------- | --------------------- | ----- |
-| masterKey | string     | 32 byte string or key |
-| error     | ErrorValue | null                  | error |
+| --------- | ---------- | --------------------- |
+| masterKey | string     | 32 byte string or key |       
+| error     | ErrorValue | null                  |
 
 #### Demo
 
@@ -224,7 +224,7 @@ recover key shards to lighthouse's Node
 #### Demo
 
 ```javascript
-import { getAuthMessage, saveShards, generate } from "@lighthouse-web3/kavach";
+import { getAuthMessage, saveShards, generate, recoverShards } from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
@@ -260,7 +260,7 @@ async function main() {
   console.log(error == null); //true;
   console.log(shards.length === 3); // true;
 
-  const { masterKey: recoveredKey } = await recoverKey(keyShards);
+  const { masterKey: recoveredKey } = await recoverKey(shards);
   console.log(masterKey === recoveredKey); //true
 }
 
