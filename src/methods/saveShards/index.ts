@@ -57,40 +57,4 @@ export const saveShards = async (
     isSuccess: isEqual(...temp) && data[0]?.message === "success",
     error: null,
   };
-  // try {
-  //   const nodeId = [1, 2, 3, 4, 5];
-  //   const nodeUrl = nodeId.map((elem) => `/api/setSharedKey/${elem}`
-  //   );
-  //   // send encryption key
-  //   const data = await Promise.all(
-  //     nodeUrl.map((url, index) => {
-  //       return API_NODE_HANDLER
-  //         (
-  //           url, "POST", auth_token,
-  //           shareTo.length > 0
-  //             ? {
-  //               address,
-  //               cid,
-  //               payload: keyShards[index],
-  //               sharedTo: shareTo,
-  //             }
-  //             : {
-  //               address,
-  //               cid,
-  //               payload: keyShards[index],
-  //             },
-  //         )
-  //     })
-  //   );
-  //   let temp = data.map((elem, index) => ({ ...elem, data: null }));
-  //   return {
-  //     isSuccess: isEqual(...temp) && data[0]?.message === "success",
-  //     error: null,
-  //   };
-  // } catch (err: any) {
-  //   return {
-  //     isSuccess: false,
-  //     error:JSON.parse(err.message),
-  //   };
-  // }
 };
