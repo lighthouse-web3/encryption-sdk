@@ -26,7 +26,7 @@ export const saveShards = async (
     const nodeUrl = nodeId.map((elem) => `/api/setSharedKey/${elem}`);
     const requestData = async (url: any, index: any) => {
       try {
-        return await API_NODE_HANDLER(
+        const response = await API_NODE_HANDLER(
           url,
           "POST",
           auth_token,
@@ -43,6 +43,10 @@ export const saveShards = async (
                 payload: keyShards[index],
               }
         );
+        if (response.error) {
+          return { isSuccess: false, error: response.error };
+        }
+        return response;
       } catch (error: any) {
         return {
           isSuccess: false,
@@ -53,6 +57,11 @@ export const saveShards = async (
     const data = [];
     for (const [index, url] of nodeUrl.entries()) {
       const response = await requestData(url, index);
+      if (response.error) {
+        return {
+          response,
+        };
+      }
       await new Promise((resolve) => setTimeout(resolve, 1000));
       data.push(response);
     }
