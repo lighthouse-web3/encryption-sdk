@@ -46,8 +46,7 @@ export const saveShards = async (
         return response;
       } catch (error: any) {
         return {
-          isSuccess: false,
-          error: JSON.parse(error.message),
+          error,
         };
       }
     };
