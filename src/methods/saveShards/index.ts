@@ -43,9 +43,6 @@ export const saveShards = async (
                 payload: keyShards[index],
               }
         );
-        if (response.error) {
-          return { isSuccess: false, error: response.error };
-        }
         return response;
       } catch (error: any) {
         return {
@@ -59,7 +56,8 @@ export const saveShards = async (
       const response = await requestData(url, index);
       if (response.error) {
         return {
-          response,
+          isSuccess: false,
+          error: JSON.parse(response?.error?.message),
         };
       }
       await new Promise((resolve) => setTimeout(resolve, 1000));
