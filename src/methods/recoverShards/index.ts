@@ -42,20 +42,12 @@ export const recoverShards = async (
         });
         return response?.payload;
       } catch (error: any) {
-        return {
-          error,
-        };
+        throw new Error(error?.message || "Unknown error");
       }
     };
     const recoveredShards = [];
     for (const [index, url] of nodeUrl.entries()) {
       const response = await requestData(url, index);
-      if (response.error) {
-        return {
-          shards: [],
-          error: JSON.parse(response?.error?.message),
-        };
-      }
       await new Promise((resolve) => setTimeout(resolve, 1000));
       recoveredShards.push(response);
     }
@@ -72,7 +64,7 @@ export const recoverShards = async (
     }
     return {
       shards: [],
-      error: JSON.parse(err?.message),
+      error: err?.message,
     };
   }
 };
