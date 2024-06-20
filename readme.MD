@@ -1,4 +1,4 @@
-# Kavach <img src="https://img.shields.io/badge/BETA-v0.1.6-green"/>
+# Kavach <img src="https://img.shields.io/badge/BETA-v0.1.7-green"/>
 
 Kavach is an encryption SDK that allows you to build your trustless, decentralized and fault-tolerant Applications using distributed key shards with threshold cryptography
 
