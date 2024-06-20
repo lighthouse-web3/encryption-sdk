@@ -33,17 +33,25 @@ export const recoverShards = async (
       (elem) => `/api/retrieveSharedKey/${elem}`
     );
     // send encryption key
-    const recoveredShards = await Promise.all(
-      nodeUrl.map((url) => {
-        return API_NODE_HANDLER(url, "POST", auth_token, {
+    const requestData = async (url: any, index: any) => {
+      try {
+        const response = await API_NODE_HANDLER(url, "POST", auth_token, {
           address,
           cid,
           dynamicData,
-        }).then((data) => {
-          return data?.payload;
         });
-      })
-    );
+        return response;
+      } catch (error: any) {
+        throw new Error(error?.message || "Unknown error");
+      }
+    };
+    const recoveredShards = [];
+    for (const [index, url] of nodeUrl.entries()) {
+      const response = await requestData(url, index);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      recoveredShards.push(response?.payload);
+    }
     return {
       shards: recoveredShards,
       error: null,
