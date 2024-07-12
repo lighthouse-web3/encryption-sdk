@@ -70,6 +70,7 @@ const solidityType = [
 const SupportedChains = {
   EVM: [],
   SOLANA: ["DEVNET", "TESTNET", "MAINNET"],
+  COREUM: ["Coreum_Devnet", "Coreum_Testnet", "Coreum_Mainnet"],
 };
 
 const evmConditions = Joi.array()
@@ -173,6 +174,48 @@ const solanaConditions = Joi.array()
   )
   .unique((a, b) => a.id === b.id);
 
+const coreumConditions = Joi.array()
+  .min(1)
+  .required()
+  .items(
+    Joi.object({
+      id: Joi.number().min(1).required(),
+      contractAddress: Joi.when("standardContractType", {
+        is: Joi.equal(""),
+        then: Joi.string(),
+        otherwise: Joi.string().required(),
+      }),
+      denom: Joi.string(),
+      classid: Joi.string(),
+      standardContractType: Joi.string().allow(""),
+      chain: Joi.string()
+        .valid(...SupportedChains["COREUM"])
+        .insensitive()
+        .required(),
+      method: Joi.when("standardContractType", {
+        is: Joi.equal(""),
+        then: Joi.string().required(),
+        otherwise: Joi.string().required(),
+      }),
+      parameters: Joi.when("standardContractType", {
+        is: Joi.equal(""),
+        then: Joi.array(),
+        otherwise: Joi.array().required(),
+      }),
+      returnValueTest: Joi.object({
+        comparator: Joi.string()
+          .valid("==", ">=", "<=", "!=", ">", "<")
+          .required(),
+        value: Joi.alternatives(
+          Joi.number(),
+          Joi.string(),
+          Joi.array()
+        ).required(),
+      }).required(),
+    })
+  )
+  .unique((a, b) => a.id === b.id);
+
 const updateConditionSchema = Joi.object({
   chainType: Joi.string()
     .allow("", null)
@@ -183,7 +226,11 @@ const updateConditionSchema = Joi.object({
   conditions: Joi.when("chainType", {
     is: Joi.equal("EVM"),
     then: evmConditions,
-    otherwise: solanaConditions,
+    otherwise: Joi.when("chainType", {
+      is: Joi.equal("SOLANA"),
+      then: solanaConditions,
+      otherwise: coreumConditions,
+    }),
   }),
   decryptionType: Joi.string()
     .allow("", null)
@@ -218,18 +265,15 @@ const accessConditionSchema = Joi.object({
   conditions: Joi.when("chainType", {
     is: Joi.equal("EVM"),
     then: evmConditions,
-    otherwise: solanaConditions,
+    otherwise: Joi.when("chainType", {
+      is: Joi.equal("SOLANA"),
+      then: solanaConditions,
+      otherwise: coreumConditions,
+    }),
   }),
-  address: Joi.string()
-    .required(),
-  keyShards: Joi.array()
-    .min(5)
-    .max(5)
-    .required()
-    .items(
-      Joi.object()),
-  cid: Joi.string()
-    .required(),
+  address: Joi.string().required(),
+  keyShards: Joi.array().min(5).max(5).required().items(Joi.object()),
+  cid: Joi.string().required(),
   // TO aggregator next iteration: "1 or 2 and (3 xor 4)"
   aggregator: Joi.when("conditions.length", {
     is: Joi.number().greater(1),
@@ -237,8 +281,5 @@ const accessConditionSchema = Joi.object({
       .pattern(/( and | or )/i)
       .required(),
   }),
-})
-export {
-  updateConditionSchema,
-  accessConditionSchema
-};
+});
+export { updateConditionSchema, accessConditionSchema };
