@@ -18,15 +18,32 @@ export const shareToAddress = async (
     const nodeId = [1, 2, 3, 4, 5];
     const nodeUrl = nodeId.map((elem) => `/api/setSharedKey/${elem}`);
     // send encryption key
-    const data = await Promise.all(
-      nodeUrl.map((url) => {
-        return API_NODE_HANDLER(url, "PUT", auth_token, {
+    const requestData = async (url: any) => {
+      try {
+        const response = await API_NODE_HANDLER(url, "PUT", auth_token, {
           address,
           cid: cid,
           shareTo,
         });
-      })
-    );
+        return response;
+      } catch (error: any) {
+        return {
+          error,
+        };
+      }
+    };
+    const data = [];
+    for (const [index, url] of nodeUrl.entries()) {
+      const response = await requestData(url);
+      if (response.error) {
+        return {
+          isSuccess: false,
+          error: JSON.parse(response?.error?.message),
+        };
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      data.push(response);
+    }
     const temp = data.map((elem, index) => ({ ...elem, data: null }));
     return {
       isSuccess: isEqual(...temp) && temp[0]?.message === "success",
@@ -35,7 +52,7 @@ export const shareToAddress = async (
   } catch (err: any) {
     return {
       isSuccess: false,
-      error: JSON.parse(err.message),
+      error: err,
     };
   }
 };

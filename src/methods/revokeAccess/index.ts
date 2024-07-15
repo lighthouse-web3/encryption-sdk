@@ -19,15 +19,32 @@ export const revokeAccess = async (
     const nodeUrl = nodeId.map((elem) => `/api/setSharedKey/${elem}`);
 
     // send encryption key
-    const data = await Promise.all(
-      nodeUrl.map((url) => {
-        return API_NODE_HANDLER(url, "DELETE", auth_token, {
+    const requestData = async (url: any) => {
+      try {
+        const response = await API_NODE_HANDLER(url, "DELETE", auth_token, {
           address,
           cid,
           revokeTo,
         });
-      })
-    );
+        return response;
+      } catch (error: any) {
+        return {
+          error,
+        };
+      }
+    };
+    const data = [];
+    for (const [index, url] of nodeUrl.entries()) {
+      const response = await requestData(url);
+      if (response.error) {
+        return {
+          isSuccess: false,
+          error: JSON.parse(response?.error?.message),
+        };
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      data.push(response);
+    }
     const temp = data.map((elem, index) => ({ ...elem, data: null }));
     return {
       isSuccess: isEqual(...temp),
@@ -36,7 +53,7 @@ export const revokeAccess = async (
   } catch (err: any) {
     return {
       isSuccess: false,
-      error: JSON.parse(err?.message),
+      error: err,
     };
   }
 };
