@@ -221,7 +221,7 @@ const updateConditionSchema = Joi.object({
     .allow("", null)
     .empty(["", null])
     .default("EVM")
-    .valid("EVM", "SOLANA")
+    .valid("EVM", "SOLANA", "COREUM")
     .insensitive(),
   conditions: Joi.when("chainType", {
     is: Joi.equal("EVM"),
@@ -254,7 +254,7 @@ const accessConditionSchema = Joi.object({
     .allow("", null)
     .empty(["", null])
     .default("EVM")
-    .valid("EVM", "SOLANA")
+    .valid("EVM", "SOLANA", "COREUM")
     .insensitive(),
   decryptionType: Joi.string()
     .allow("", null)
