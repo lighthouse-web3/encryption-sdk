@@ -1,16 +1,16 @@
-import _package from "../.."
-import { ethers } from "ethers"
-import { getAuthMessage } from "../../getAuthMessage"
+import _package from "../..";
+import { ethers } from "ethers";
+import { getAuthMessage } from "../../getAuthMessage";
 
 describe("revoke file address", () => {
   let signer, signer2;
 
   beforeAll(async () => {
     signer = new ethers.Wallet(
-      "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b",
+      "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8b"
     );
     signer2 = new ethers.Wallet(
-      "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8a",
+      "0x8218aa5dbf4dbec243142286b93e26af521b3e91219583595a06a7765abc9c8a"
     );
   });
 
@@ -52,8 +52,6 @@ describe("revoke file address", () => {
       [signer2.address]
     );
     expect(isSuccess).toBe(false);
-    expect(error.message).toMatch(/Access Denied/i);
+    expect(error.message.message.message).toMatch(/Access Denied/i);
   }, 20000);
-
-
 });
