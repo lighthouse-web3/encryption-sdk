@@ -1,4 +1,4 @@
-# Kavach <img src="https://img.shields.io/badge/BETA-v0.1.9-green"/>
+# Kavach <img src="https://img.shields.io/badge/BETA-v0.2.0-green"/>
 
 Kavach is an encryption SDK that allows you to build your trustless, decentralized and fault-tolerant Applications using distributed key shards with threshold cryptography
 
@@ -36,10 +36,10 @@ This method generates randomized key shards
 
 #### returns
 
-| Name      | Type                        | Description            |
-| --------- | --------------------------- | ---------------------- |
-| masterKey | string                      | 32 byte string or key  |
-| keyShards | {key:string,index:string}[] | key shards             |
+| Name      | Type                        | Description           |
+| --------- | --------------------------- | --------------------- |
+| masterKey | string                      | 32 byte string or key |
+| keyShards | {key:string,index:string}[] | key shards            |
 
 #### Demo
 
@@ -74,7 +74,7 @@ This method recovers the master key from the shards generated
 
 | Name      | Type       | Description           |
 | --------- | ---------- | --------------------- |
-| masterKey | string     | 32 byte string or key |       
+| masterKey | string     | 32 byte string or key |
 | error     | ErrorValue | null                  |
 
 #### Demo
@@ -150,13 +150,13 @@ Backup key to lighthouse's Node
 
 #### Parameters
 
-| Name              | Type                              | Default | Description                                   |
-| ----------------- | --------------------------------- | ------- | --------------------------------------------- |
-| address           | string                            |         | address of the owner of the key               |
-| cid               | string                            |         | unique id or file CID                         |
-| auth_token      | string                            |         | signed Message gotten from getAuthMessage/JWT |
-| keyShards         | Array<{key:string; index:string}> |         | An array of 5 key shards/ element             |
-| shareTo           | Array< address >(Optional)        | []      | An array of address                           |
+| Name       | Type                              | Default | Description                                   |
+| ---------- | --------------------------------- | ------- | --------------------------------------------- |
+| address    | string                            |         | address of the owner of the key               |
+| cid        | string                            |         | unique id or file CID                         |
+| auth_token | string                            |         | signed Message gotten from getAuthMessage/JWT |
+| keyShards  | Array<{key:string; index:string}> |         | An array of 5 key shards/ element             |
+| shareTo    | Array< address >(Optional)        | []      | An array of address                           |
 
 #### returns
 
@@ -206,25 +206,30 @@ recover key shards to lighthouse's Node
 
 #### Parameters
 
-| Name              | Type                                                         | Default | Description                                   |
-| ----------------- | ------------------------------------------------------------ | ------- | --------------------------------------------- |
-| address           | string                                                       |         | address of the owner of the key               |
-| cid               | string                                                       |         | unique id or file CID                         |
-| auth_token      | string                                                       |         | signed Message gotten from getAuthMessage/JWT |
-| keyCount          | number(optional)                                             | 3       | number of nodes to ping for shards (**Note**: _must be less than or equal to 5_) |
-| dynamicData       | object<{[`conditionID`.`parameterName`]: value} >(Optional)  | {}      | This is used to pass additional or dynamic data like a signature during key recovery with AccessControl  |
+| Name        | Type                                                        | Default | Description                                                                                             |
+| ----------- | ----------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| address     | string                                                      |         | address of the owner of the key                                                                         |
+| cid         | string                                                      |         | unique id or file CID                                                                                   |
+| auth_token  | string                                                      |         | signed Message gotten from getAuthMessage/JWT                                                           |
+| keyCount    | number(optional)                                            | 3       | number of nodes to ping for shards (**Note**: _must be less than or equal to 5_)                        |
+| dynamicData | object<{[`conditionID`.`parameterName`]: value} >(Optional) | {}      | This is used to pass additional or dynamic data like a signature during key recovery with AccessControl |
 
 #### returns
 
-| Name             | Type                                | Description                       |
-| ---------------- | ----------------------------------  | ----------------------------------|
-| keyShards        | Array<{key:string; index:string}>   | key shards  recovered fromm nodes |
-| error            | ErrorValue                          | Errors                            |
+| Name      | Type                              | Description                      |
+| --------- | --------------------------------- | -------------------------------- |
+| keyShards | Array<{key:string; index:string}> | key shards recovered fromm nodes |
+| error     | ErrorValue                        | Errors                           |
 
 #### Demo
 
 ```javascript
-import { getAuthMessage, saveShards, generate, recoverShards } from "@lighthouse-web3/kavach";
+import {
+  getAuthMessage,
+  saveShards,
+  generate,
+  recoverShards,
+} from "@lighthouse-web3/kavach";
 import { ethers } from "ethers";
 
 async function main() {
@@ -246,7 +251,6 @@ async function main() {
 
   console.log(error === null); // true;
   console.log(isSuccess === true); //true;
-
 
   authMessage = await getAuthMessage(signer.address);
   signedMessage = await signer.signMessage(authMessage.message);
@@ -278,12 +282,12 @@ Share file Key to address
 
 #### Parameters
 
-| Name              | Type                      | Default | Description                                     |
-| ----------------- | ------------------------- | ------- | ----------------------------------------------- |
-| address           | string                    |         | address of the owner of the key                 |
-| cid               | string                    |         | unique id or file CID                           |
-| auth_token      | string                    |         | signed Message gotten from getAuthMessage/ JWT  |
-| shareTo           | Array< address >(Optional)| []      | An array of address to share file key shards to |
+| Name       | Type                       | Default | Description                                     |
+| ---------- | -------------------------- | ------- | ----------------------------------------------- |
+| address    | string                     |         | address of the owner of the key                 |
+| cid        | string                     |         | unique id or file CID                           |
+| auth_token | string                     |         | signed Message gotten from getAuthMessage/ JWT  |
+| shareTo    | Array< address >(Optional) | []      | An array of address to share file key shards to |
 
 #### returns
 
@@ -377,12 +381,12 @@ revoke access to addresses with direct access
 
 #### Parameters
 
-| Name              | Type                      | Default | Description                                     |
-| ----------------- | ------------------------- | ------- | ----------------------------------------------- |
-| address           | string                    |         | address of the owner of the key                 |
-| cid               | string                    |         | unique id or file CID                           |
-| auth_token      | string                    |         | signed Message gotten from getAuthMessage /JWT  |
-| revokeTo          | Array< address >(Optional)| []      | An array of address to remove for Direct access |
+| Name       | Type                       | Default | Description                                     |
+| ---------- | -------------------------- | ------- | ----------------------------------------------- |
+| address    | string                     |         | address of the owner of the key                 |
+| cid        | string                     |         | unique id or file CID                           |
+| auth_token | string                     |         | signed Message gotten from getAuthMessage /JWT  |
+| revokeTo   | Array< address >(Optional) | []      | An array of address to remove for Direct access |
 
 #### returns
 
@@ -492,7 +496,7 @@ main()
   });
 ```
 
-- ### _accessCondition( address: string, cid: string, auth_token: string, conditions: Condition[], aggregator?: string,chainType?: ChainType, keyShards? :  Array<{key:string; index:string}>,  decryptionType? : string )_
+- ### _accessCondition( address: string, cid: string, auth_token: string, conditions: Condition[], aggregator?: string,chainType?: ChainType, keyShards? : Array<{key:string; index:string}>, decryptionType? : string )_
 
 Add more granular access Conditions based on on-Chain Data, this supports custom EVM contracts, block timestamps and so on.
 with support for over 15 Ethereum Virtual Machine (EVM) based networks and based Solana RPC calls
@@ -520,7 +524,7 @@ with support for over 15 Ethereum Virtual Machine (EVM) based networks and based
 - BTTC_Testnet
 - Sepolia_PGN
 - Arbitrum_Sepolia
-- Sepolia: 
+- Sepolia:
 - BASE_Goerli
 
 Solana
@@ -531,17 +535,16 @@ Solana
 
 #### Parameters
 
-| Name              | Type                                | Description                                                                     |
-| ----------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
-| address           | string                              | Address of the owner of the key                                                 |
-| cid               | string                              | Unique id or file CID                                                           |
-| auth_token      | string                              | Signed Message gotten from getAuthMessage /JWT                                  |
-| conditions        | Array< Condition >                  | This Array contains a list of conditions to be tested on chain                  |
-| aggregator        | string                              | This is a template string that structures how the conditions should be computed |
-| chainType         | string                              | This defaults to EVM and can be set to Solana for Solana conditions             |
-| keyShards?        | Array<{key:string; index:string}>   | This Field is optional, you can use it to set, overWrite or rotate key shards   |
-| decryptionType?   | string                              | This value can be set to ACCESS_CONDITIONS to first time shard is added, **WARNING: This sets Owner to address zero(0x0000000000000000000000000000)**  |
-
+| Name            | Type                              | Description                                                                                                                                           |
+| --------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| address         | string                            | Address of the owner of the key                                                                                                                       |
+| cid             | string                            | Unique id or file CID                                                                                                                                 |
+| auth_token      | string                            | Signed Message gotten from getAuthMessage /JWT                                                                                                        |
+| conditions      | Array< Condition >                | This Array contains a list of conditions to be tested on chain                                                                                        |
+| aggregator      | string                            | This is a template string that structures how the conditions should be computed                                                                       |
+| chainType       | string                            | This defaults to EVM and can be set to Solana for Solana conditions                                                                                   |
+| keyShards?      | Array<{key:string; index:string}> | This Field is optional, you can use it to set, overWrite or rotate key shards                                                                         |
+| decryptionType? | string                            | This value can be set to ACCESS_CONDITIONS to first time shard is added, **WARNING: This sets Owner to address zero(0x0000000000000000000000000000)** |
 
 #### returns
 
@@ -708,20 +711,19 @@ Get Consensus Message to Sign
 
 #### Parameters
 
-| Name               | Type    | Default | Description                                          |
-| ------------------ | ------- | ------- | ---------------------------------------------------- |
-| address            | string  |         | address of the owner of the key                      |
-| payload            | string  |         | signed consensus message  or refresh Token           |
-| useAsRefreshToken  | boolean |  false  | If payload is refreshToken this should be set to true |
-
+| Name              | Type    | Default | Description                                           |
+| ----------------- | ------- | ------- | ----------------------------------------------------- |
+| address           | string  |         | address of the owner of the key                       |
+| payload           | string  |         | signed consensus message or refresh Token             |
+| useAsRefreshToken | boolean | false   | If payload is refreshToken this should be set to true |
 
 #### returns
 
-| Name            | Type       | Description |
-| ----------------| ---------- | ----------- |
-| JWT             | string     | return JWT  |
-| refreshToken    | string     |             |
-| error           | ErrorValue | Errors      |
+| Name         | Type       | Description |
+| ------------ | ---------- | ----------- |
+| JWT          | string     | return JWT  |
+| refreshToken | string     |             |
+| error        | ErrorValue | Errors      |
 
 ```javascript
 import { getAuthMessage, AuthMessage, getJWT } from "@lighthouse-web3/kavach";
@@ -749,27 +751,26 @@ main()
   });
 ```
 
-
 - ### _transferOwnership(address: string, cid: string, newOwner: string, auth_token: string, resetSharedTo: boolean = true)_
 
 Transfer Ownership of a Resource
 
 #### Parameters
 
-| Name             | Type    | Default | Description                                      |
-| ---------------- | ------- | ------- | ------------------------------------------------ |
-| address          | string  |         | Address of the current owner of the resource    |
-| cid              | string  |         | Content ID (CID) of the resource                |
-| newOwner         | string  |         | Address of the new owner for the resource       |
-| auth_token     | string  |         | Authentication payload or token                 |
-| resetSharedTo    | boolean | true    | Reset shared permissions when ownership changes |
+| Name          | Type    | Default | Description                                     |
+| ------------- | ------- | ------- | ----------------------------------------------- |
+| address       | string  |         | Address of the current owner of the resource    |
+| cid           | string  |         | Content ID (CID) of the resource                |
+| newOwner      | string  |         | Address of the new owner for the resource       |
+| auth_token    | string  |         | Authentication payload or token                 |
+| resetSharedTo | boolean | true    | Reset shared permissions when ownership changes |
 
 #### Returns
 
-| Name       | Type   | Description                       |
-| ---------- | ------ | --------------------------------- |
-| result     | string | Result of the ownership transfer  |
-| error      | Error  | Any error that occurs             |
+| Name   | Type   | Description                      |
+| ------ | ------ | -------------------------------- |
+| result | string | Result of the ownership transfer |
+| error  | Error  | Any error that occurs            |
 
 #### Example
 

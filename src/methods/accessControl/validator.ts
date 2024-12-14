@@ -71,6 +71,7 @@ const SupportedChains = {
   EVM: [],
   SOLANA: ["DEVNET", "TESTNET", "MAINNET"],
   COREUM: ["Coreum_Devnet", "Coreum_Testnet", "Coreum_Mainnet"],
+  RADIX: ["Radix_Mainnet"],
 };
 
 const evmConditions = Joi.array()
@@ -216,12 +217,43 @@ const coreumConditions = Joi.array()
   )
   .unique((a, b) => a.id === b.id);
 
+const radixConditions = Joi.array()
+  .min(1)
+  .required()
+  .items(
+    Joi.object({
+      id: Joi.number().min(1).required(),
+      standardContractType: Joi.string().allow(""),
+      resourceAddress: Joi.string().required(),
+      chain: Joi.string()
+        .valid(...SupportedChains["RADIX"])
+        .insensitive()
+        .required(),
+      method: Joi.when("standardContractType", {
+        is: Joi.equal(""),
+        then: Joi.string().required(),
+        otherwise: Joi.string().required(),
+      }),
+      returnValueTest: Joi.object({
+        comparator: Joi.string()
+          .valid("==", ">=", "<=", "!=", ">", "<")
+          .required(),
+        value: Joi.alternatives(
+          Joi.number(),
+          Joi.string(),
+          Joi.array()
+        ).required(),
+      }).required(),
+    })
+  )
+  .unique((a, b) => a.id === b.id);
+
 const updateConditionSchema = Joi.object({
   chainType: Joi.string()
     .allow("", null)
     .empty(["", null])
     .default("EVM")
-    .valid("EVM", "SOLANA", "COREUM")
+    .valid("EVM", "SOLANA", "COREUM", "RADIX")
     .insensitive(),
   conditions: Joi.when("chainType", {
     is: Joi.equal("EVM"),
@@ -229,7 +261,11 @@ const updateConditionSchema = Joi.object({
     otherwise: Joi.when("chainType", {
       is: Joi.equal("SOLANA"),
       then: solanaConditions,
-      otherwise: coreumConditions,
+      otherwise: Joi.when("chainType", {
+        is: Joi.equal("COREUM"),
+        then: coreumConditions,
+        otherwise: radixConditions,
+      }),
     }),
   }),
   decryptionType: Joi.string()
@@ -254,7 +290,7 @@ const accessConditionSchema = Joi.object({
     .allow("", null)
     .empty(["", null])
     .default("EVM")
-    .valid("EVM", "SOLANA", "COREUM")
+    .valid("EVM", "SOLANA", "COREUM", "RADIX")
     .insensitive(),
   decryptionType: Joi.string()
     .allow("", null)
@@ -268,7 +304,11 @@ const accessConditionSchema = Joi.object({
     otherwise: Joi.when("chainType", {
       is: Joi.equal("SOLANA"),
       then: solanaConditions,
-      otherwise: coreumConditions,
+      otherwise: Joi.when("chainType", {
+        is: Joi.equal("COREUM"),
+        then: coreumConditions,
+        otherwise: radixConditions,
+      }),
     }),
   }),
   address: Joi.string().required(),
