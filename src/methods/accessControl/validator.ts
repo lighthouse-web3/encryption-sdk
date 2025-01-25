@@ -75,7 +75,6 @@ const SupportedChains = {
 };
 
 const evmConditions = Joi.array()
-  .min(1)
   .required()
   .items(
     Joi.object({
@@ -127,7 +126,6 @@ const evmConditions = Joi.array()
   .unique((a, b) => a.id === b.id);
 
 const solanaConditions = Joi.array()
-  .min(1)
   .required()
   .items(
     Joi.object({
@@ -176,7 +174,6 @@ const solanaConditions = Joi.array()
   .unique((a, b) => a.id === b.id);
 
 const coreumConditions = Joi.array()
-  .min(1)
   .required()
   .items(
     Joi.object({
@@ -218,7 +215,6 @@ const coreumConditions = Joi.array()
   .unique((a, b) => a.id === b.id);
 
 const radixConditions = Joi.array()
-  .min(1)
   .required()
   .items(
     Joi.object({
